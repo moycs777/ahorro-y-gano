@@ -1,0 +1,10 @@
+tienda:
+
+nombre
+categoria
+fecha de creacion
+
+
+calculo de tiempo de una tienda:
+select extract(year from current_date) - extract(year from fecha) as anios ,fecha,current_date as ano from borrar_ho
+where extract(year from current_date) - extract(year from fecha) > 0;

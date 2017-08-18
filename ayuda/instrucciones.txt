@@ -1,0 +1,48 @@
+php artisan migrate:refresh --seed
+https://www.youtube.com/watch?v=QQmWRdicvMI
+
+iniciar servidor:
+php artisan serve
+Crear una db llamada 'ayg'
+ejecutar limpieza y creacion de tablas: 
+
+activar cors:
+https://github.com/barryvdh/laravel-cors/issues/217
+
+https://github.com/barryvdh/laravel-cors
+
+https://www.youtube.com/watch?v=5hOMkFMxY90
+
+anadir git repo:
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin https://github.com/moycs777/ahorro-y-gano.git
+git push -u origin master
+
+
+usuario:
+525548184
+password:
+%AzByCxD1&
+
+iniciar el servidor:
+php artisan serve
+
+
+
+home682274729.1and1-data.host
+u89327773
+=A7H8Pha
+
+extension para chrome:
+https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi/related
+
+
+ionic:
+npm install -g cordova ionic
+
+https://www.youtube.com/watch?v=foQgktSU4Bo
+http://artisantearooms.com/the-belko-experiment-2016-spanish-full-movie-torrent-download
+
+https://www.youtube.com/watch?v=e4poifNgYZc

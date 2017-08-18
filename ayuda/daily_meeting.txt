@@ -1,0 +1,6 @@
+31 jul
+
+- en la partde de las tiendas permitir asignar los puntos a otorgar (minimo definido por bd)
+deudas o comisiones q se van generando
+-datos personales para administradores
+-no modificar anincios q tengan cupon en espera

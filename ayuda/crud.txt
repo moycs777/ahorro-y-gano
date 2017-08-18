@@ -1,0 +1,65 @@
+php artisan crud:generate Posts --fields="title:string:required, body:text:required" --route=yes --pk=id --view-path="admin" --namespace=Admin --route-group=admin
+
+Generate Pivot tables
+
+php artisan make:migration:pivot tags posts
+
+Supported Field Types
+These fields are supported for migration and view's form:
+
+string
+char
+varchar
+password
+email
+date
+datetime
+time
+timestamp
+text
+mediumtext
+longtext
+json
+jsonb
+binary
+number
+integer
+bigint
+mediumint
+tinyint
+smallint
+boolean
+decimal
+double
+float
+
+
+php artisan vendor:publish
+https://packagist.org/packages/roland/crud
+
+Stores:
+php artisan crud:generate Store --fields="name:string:required,admin_id:integer:required,nif_cif:string:required,clasification_id:integer:required,address:string:required,billing_address:string:required,state:string:required,city:string:required,location:string:required,zip:string,phone_1:string:required,phone_2:string,email:string:required,password:string:required,contact:string,debt_level:string:required,status:boolean:required" --route=yes --pk=id --view-path="admin" --namespace=Admin --route-group=admin
+
+Promotions:
+php artisan crud:generate Promotion --fields="store_id:integer:required,name:string:required,description:text:required,price_not_offert:double:required,price_with_offert:double:required,file:string:required,location:string:required,expires:date,points:integer:required,type:integer:required,status:boolean:required" --route=yes --pk=id --view-path="admin" --namespace=Admin --route-group=admin
+
+
+Clasification:
+php artisan crud:generate Clasification --fields="name:string:required,doubt_percentage:decimal:required,min_points:float:required,status:boolean:required" --route=yes --pk=id --view-path="admin" --namespace=Admin --route-group=admin
+
+Coupon:
+php artisan crud:generate Coupon --fields="store_id:integer:required,promotion_id:integer:required,user_id:integer:required,consolidated:boolean:required,payed:boolean:required,invoice:boolean,points:integer:required" --route=yes --pk=id --view-path="admin" --namespace=Admin --route-group=admin
+
+
+
+php artisan make:migration:pivot clasification store
+
+
+luego de generar un crud hay q crear el constructor
+
+admin level:
+1 admin
+2 delegado
+3 agente
+
+5 tienda
