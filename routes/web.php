@@ -56,6 +56,7 @@ Route::group(['namespace' => 'User'],function(){
 	Route::get('/','HomeController@index')->name('raiz');
 	Route::resource('user/usercoupon','UserCouponController');
 	Route::get('user/concurso','UserConcursoController@index')->name('user.concurso');
+	Route::get('user/ranking','UserConcursoController@ranking')->name('user.ranking');
 
 	Route::get('post/{post}','PostController@post')->name('post');
 	Route::get('post/tag/{tag}','HomeController@tag')->name('tag');

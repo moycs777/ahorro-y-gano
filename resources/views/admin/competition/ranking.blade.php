@@ -31,6 +31,24 @@
         <div class="box">
           <div class="box-header">
             <br>
+
+            @if (!empty($concurso))
+            <div class="col-md-10">
+              
+              <div class="col-md-4">
+                <h4>Concurso</h4>{{ $concurso->name }}
+              </div>
+              <div class="col-md-4">
+                <h4>Meta</h4>{{ $concurso->goal }}
+              </div>
+              <div class="col-md-4">
+                <h4>Ganacia </h4><p>{{  ( $concurso->goal * 0.01 ) / $concurso->reward  }} €</p>
+                 
+              </div> 
+
+            </div>
+            @endif
+
             @if (!empty($activa))
               <td>suma : {{ $activa->puntos[0]->sum}}</td>
             @endif            
@@ -38,43 +56,38 @@
           </div>
           <!-- /.box-header -->
           <div class="box-body">
-            <div>
+            {{-- <div>
               @if (!empty($concurso))
-                <p>Meta</p>{{ $concurso->goal }}
-                <p>porcentaje de ganacia</p>{{ $concurso->reward }}
+                
+                
               @endif
-            </div>
+            </div> --}}
             <table id="example1" class="table table-bordered table-striped">
               <thead>
               <tr>                
-                <th>Nro</th>
-                <th>Concurso</th>
-                <th>Activo</th>
-                <th>Meta</th>
-                <th>Creado</th>
-                <th>Puntos actuales</th>
-                <th>Premio</th>
-                <th>Porcentaje</th>                
+                <th>Posicion</th>
+                <th>Usuario</th>
+                <th>Puntos Acumulados</th>
+                               
               </tr>
               </thead>
               <tbody>
-              @foreach ($ganadores as $item)
+             {{--  @foreach ($ganadores as $item)
                 {{ $item }}
-              @endforeach
-              {{-- @if (! empty($ganadores) )
+              @endforeach --}}
+              @if (! empty($ganadores) )
               @foreach ($ganadores as $item)
                 <tr>
-                  <td>{{ $loop->index + 1 }}</td>
-                    <td>{{ $item->name }}</td>
-                    <td>{{ $item->active }}</td>
-                    <td>{{ $item->goal }}</td>
-                    <td>{{ $item->created_at }}</td>
-                    <td>{{ $activa->puntos[0]->sum}}</td>
-                    <td>{{ $item->reward }}</td>
-                    <td>{{ $item->user }}</td>
+                  <td>
+                      {{ $loop->index + 1 }}
+                  </td>
+                  <td>{{ $item->user->email}}</td>
+                  <td>{{ $item->sum}}</td>
+                  
+              
                 </tr>
               @endforeach
-              @endif --}}
+              @endif
               </tbody>
               <tfoot>
               <tr>

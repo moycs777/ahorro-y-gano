@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Competition;
-use App\Winner;
 use App\Coupon;
+use App\Ranking;
+use App\Winner;
+
 use Carbon\Carbon;
 use DateTime;
 use Session;
@@ -48,8 +50,7 @@ class CompetitionController extends Controller
 
     public function ranking()
     {
-        //return "ran";
-        $competitions = Competition::all();
+
         $concurso = Competition::where('active', '=', 1)->first();
         if ( empty($concurso) ) {
             return "no hay concurso activo";
@@ -57,18 +58,11 @@ class CompetitionController extends Controller
         }
         $concurso->puntos = DB::select('select sum(points) as sum from ayg.coupons where created_at >= 2017-08-07 and ayg.coupons.consolidated = 1');
 
-        /*$ganadores = DB::select('select user_id,count(*),sum(points)
-                 from coupons where created_at >= "' .$concurso->created_at. '" 
-                 and consolidated = 1 
-                 group by user_id' );*/
-
-        $ganadores = Coupon::where('consolidated', 1)
-                       ->orderBy('points', 'asc')
-                       ->where('created_at', '>=', $concurso->created_at)
-                       ->get();
-        //dd($participantes);
-
-        return view( 'admin.competition.ranking', compact('concurso','activa', 'ganadores') );
+        $ganadores = Ranking::where('competition_id', '=', $concurso->id)
+            ->orderBy('sum', 'asc')
+            ->get();
+        //dd($ganadores);
+        return view( 'admin.competition.ranking', compact('concurso', 'ganadores') );
 
     }
 

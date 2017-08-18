@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\Coupon;
 use App\Competition;
+use App\Ranking;
 use App\Model\user;
 
 use Carbon\Carbon;
@@ -44,4 +45,20 @@ class UserConcursoController extends Controller
         }
         
     }
+
+    public function ranking(){
+        $concurso = Competition::where('active', '=', 1)->first();
+        if ( empty($concurso) ) {
+            return "no hay concurso activo";
+            # code...
+        }
+        $concurso->puntos = DB::select('select sum(points) as sum from ayg.coupons where created_at >= 2017-08-07 and ayg.coupons.consolidated = 1');
+
+        $ganadores = Ranking::where('competition_id', '=', $concurso->id)
+            ->orderBy('sum', 'asc')
+            ->take(100)
+            ->get();
+        return view( 'user.concurso.ranking', compact('concurso', 'ganadores') );
+    }
+
 }

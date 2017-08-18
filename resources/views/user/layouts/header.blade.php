@@ -23,6 +23,9 @@
                         <a href="{{ route('user.concurso') }}">concurso</a>
                     </li>
                     <li>
+                        <a href="{{ route('user.ranking') }}">Tabla de puntos</a>
+                    </li>
+                    <li>
                         <a href="">Mas buscados</a>
                     </li>
                     <li>

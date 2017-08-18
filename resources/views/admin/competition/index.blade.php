@@ -106,7 +106,7 @@
                         {{--  $premio = 0;
                          $premio = $item->goal * 0.1
                          $premio = ($premio * $item->reward) / 100; --}}
-                        
+                        {{-- Ganancia en Euros --}}
                         {{  ($item->goal * 0.01) / $item->reward  }} €
                       
                     @endif

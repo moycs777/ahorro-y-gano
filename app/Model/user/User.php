@@ -20,6 +20,10 @@ class User extends Authenticatable
     public function competition_user(){
         return $this->hasMany('App\Competition');
     }
+
+    public function ranking(){
+        return $this->hasMany('App\Ranking');
+    }
     
     protected $hidden = [
         'password', 'remember_token',

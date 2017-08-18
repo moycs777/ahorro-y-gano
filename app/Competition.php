@@ -14,6 +14,10 @@ class Competition extends Model
         return $this->belongsTo('App\Model\user\user');
     }
 
+    public function ranking(){
+        return $this->hasMany('App\Ranking');
+    }
+
     
 
 }

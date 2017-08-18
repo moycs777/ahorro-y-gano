@@ -52,11 +52,22 @@ class CouponController extends Controller
             //dd($inicio);
 
             //Aqui registramos y actualizamos la tabla de ranking
-            $ranking = new Ranking();
-            $ranking->user_id = $coupon->user_id;
-            $ranking->competition_id = $competition->id;
-            $ranking->sum += $coupon->points;
-            $ranking->save();
+            $ranking = Ranking::where('user_id', '=', $coupon->user_id)
+                ->where('competition_id', '=', $competition->id)
+                ->first();
+
+            if ($ranking) {
+                $ranking->user_id = $coupon->user_id;
+                $ranking->competition_id = $competition->id;
+                $ranking->sum += $coupon->points;
+                $ranking->save();
+            }elseif (!$ranking) {
+                $ranking = new Ranking();
+                $ranking->user_id = $coupon->user_id;
+                $ranking->competition_id = $competition->id;
+                $ranking->sum = $coupon->points;
+                $ranking->save();
+            }
 
             //Buscamos los cupones activados y que pertenescan a el cocnurso actual
             $cupones = DB::table('coupons')
@@ -79,8 +90,7 @@ class CouponController extends Controller
                      from coupons where created_at >= "' .$inicio. '" 
                      and consolidated = 1 
                      group by user_id' ); 
-                //dd($ganadores[0]->sum);
-                //print_r($ganadores);
+                //damos por finalizado el concurso
                 $competition->active = 0;
                 $competition->save();
                 
