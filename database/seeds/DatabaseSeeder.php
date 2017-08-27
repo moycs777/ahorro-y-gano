@@ -4,8 +4,7 @@ use Illuminate\Database\Seeder;
 use Carbon\Carbon;
 
 class DatabaseSeeder extends Seeder
-{
-    
+{    
     public function run()
     {
         DB::table('admins')->insert([
@@ -26,12 +25,24 @@ class DatabaseSeeder extends Seeder
             'name' => 'Moises',
             'email' => 'moycs777@gmail.com',
             'password' => bcrypt('12345678'),
+            'reffer_id' => 0,
         ]);
 
+        DB::table('reffers')->insert([
+            'user_id' => 1,
+            'reffered_id' => 2,
+        ]); 
+
+        DB::table('reffers')->insert([
+            'user_id' => 1,
+            'reffered_id' => 3,
+        ]);       
+        
         DB::table('users')->insert([
             'name' => 'Cesar',
             'email' => 'cesar@gmail.com',
             'password' => bcrypt('12345678'),
+            'reffer_id' => 1,
         ]);
 
         DB::table('admins')->insert([

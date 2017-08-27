@@ -23,16 +23,13 @@ class UserCouponController extends Controller
         //dd($coupons);
         return view('user.coupon.index',compact('coupons'));
         
-        
     }
-
    
     public function create()
     {
-        return "store create";
+
     }
 
-    
     public function store(Request $request)
     {
         $data = (json_decode($request->promotion, true));
@@ -55,20 +52,5 @@ class UserCouponController extends Controller
         //
     }
 
-    public function edit($id)
-    {
-        //
-    }
-
     
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-   
-    public function destroy($id)
-    {
-        //
-    }
 }

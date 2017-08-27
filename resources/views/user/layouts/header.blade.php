@@ -25,6 +25,7 @@
                     <li>
                         <a href="{{ route('user.ranking') }}">Tabla de puntos</a>
                     </li>
+                    <li class=""><a href="{{ route('user.beneficiario') }}"><i class="fa fa-circle-o"></i> Regalar puntos</a></li>
                     <li>
                         <a href="">Mas buscados</a>
                     </li>

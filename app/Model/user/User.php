@@ -10,7 +10,7 @@ class User extends Authenticatable
     use Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'reffer_id',
     ];
     
     public function coupon(){
@@ -23,6 +23,10 @@ class User extends Authenticatable
 
     public function ranking(){
         return $this->hasMany('App\Ranking');
+    }
+
+    public function reffers(){
+        return $this->hasMany('App\Reffer', 'user_id');
     }
     
     protected $hidden = [

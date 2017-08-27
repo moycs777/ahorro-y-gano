@@ -65,6 +65,20 @@
                    </div>
                </div>
 
+               <div class="form-group{{ $errors->has('reffer_id') ? ' has-error' : '' }}">
+                   <label for="reffer_id" class="col-md-4 control-label">Codigo de tu referido</label>
+
+                   <div class="col-md-6">
+                       <input id="reffer_id" type="num" class="form-control" min="1" name="reffer_id" value="{{ old('reffer_id') }}" required autofocus>
+
+                       @if ($errors->has('reffer_id'))
+                           <span class="help-block">
+                               <strong>{{ $errors->first('reffer_id') }}</strong>
+                           </span>
+                       @endif
+                   </div>
+               </div>
+
                <div class="form-group">
                    <div class="col-md-6 col-md-offset-4">
                        <button type="submit" class="btn btn-primary">
@@ -81,3 +95,4 @@
 @endsection
 @section('footer')
 @endsection
+

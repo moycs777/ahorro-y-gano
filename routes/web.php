@@ -57,6 +57,9 @@ Route::group(['namespace' => 'User'],function(){
 	Route::resource('user/usercoupon','UserCouponController');
 	Route::get('user/concurso','UserConcursoController@index')->name('user.concurso');
 	Route::get('user/ranking','UserConcursoController@ranking')->name('user.ranking');
+	Route::get('user/beneficiario','UserConcursoController@mostrarBeneficiaro')->name('user.beneficiario');
+	Route::get('user/busqueda', 'UserConcursoController@busquedaBeneficiaro')->name('busqueda');
+	Route::post('user/regalar', 'UserConcursoController@regalar')->name('regalar');
 
 	Route::get('post/{post}','PostController@post')->name('post');
 	Route::get('post/tag/{tag}','HomeController@tag')->name('tag');
@@ -64,8 +67,7 @@ Route::group(['namespace' => 'User'],function(){
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
-
 // 404
-Route::get('pagenotfound', ['as' => 'notfound', 'uses' => 'HomeController@pagenotfound']);
+Route::get('pagenotfound', ['as' => 'notfound', 'uses' => 'HomeController@index']);
 
 Auth::routes();

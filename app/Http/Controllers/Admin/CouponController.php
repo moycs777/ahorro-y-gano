@@ -6,8 +6,11 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Coupon;
+use App\Store;
 use App\Competition;
+use App\Gift;
 use App\Ranking;
+use App\Reffer;
 use App\Winner;
 use App\Model\user;
 
@@ -29,8 +32,9 @@ class CouponController extends Controller
 
     public function index()
     {
-        
-        $coupon = Coupon::all();
+        $store = Store::where('auth_id', '=', Auth::user()->id )->get();    
+        //dd($store[0]);
+        $coupon = Coupon::where('store_id', '=', $store[0]->id)->get();
         return view('admin.coupon.index', compact('coupon'));
     }
 
@@ -48,8 +52,56 @@ class CouponController extends Controller
         if (!$competition == null) {
             $goal = $competition->goal;
             $inicio = $competition->created_at;
-            //dd($goal);
-            //dd($inicio);
+            
+            //1. verificamos cuantos referidos tiene el padre 
+            $father = Reffer::where('reffered_id', '=', $coupon->user_id)->first();
+
+            if (!$father == null) {
+                $reffers = Reffer::where('user_id', '=', $father->user_id)->count();
+
+                //si el padre tiene cupon activo en el concurso actual para darle los puntos que le correspondan
+                $is_in_competition = Ranking::where('user_id', '=', $father->user_id)
+                    ->where('competition_id', '=', $competition->id)
+                    ->first();
+
+                if (! $is_in_competition == null) {
+                    //determinar el numero de referidos q tiene el padre
+                    if ($reffers < 10)
+                        {    
+                          $points = $coupon->points * 0.60;
+                        } 
+                        elseif (($reffers >= 10) && ($reffers < 20))
+                        {
+                          $points = $coupon->points * 0.70;
+                        } 
+                        elseif (($reffers >= 20) && ($reffers < 30))
+                        {
+                          $points = $coupon->points * 0.80;
+                        } 
+                        elseif ($reffers >= 30)
+                        {
+                          $points = $coupon->points * 0.90;
+                        }
+
+                    $gift = Gift::where('user_id', '=',  $father->user_id) 
+                        ->where('competition_id', '=', $competition->id)
+                        ->first();
+
+                    if ($gift) {                   
+                        $gift->sum += $points;
+                        $gift->save();
+                    }elseif (!$gift){
+                        $gift = new Gift();
+                        $gift->user_id = $father->user_id;
+                        $gift->competition_id = $competition->id;
+                        $gift->sum += $points;
+                        $gift->save();
+
+                    }
+                // 2. registramos el referido en el ranking
+                }
+
+            }
 
             //Aqui registramos y actualizamos la tabla de ranking
             $ranking = Ranking::where('user_id', '=', $coupon->user_id)
@@ -103,7 +155,8 @@ class CouponController extends Controller
                     
                 }
 
-            }           
+            }    
+                   
             return redirect()->route('competition.index');
 
         //fin del conicional

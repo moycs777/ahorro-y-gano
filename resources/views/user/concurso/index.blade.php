@@ -23,6 +23,7 @@
             <div class="box-body">
               <div class="box">
                 <div class="box-header">
+                  <a href="{{ route('user.beneficiario') }}"><i class="fa fa-circle-o"></i> Regalar puntos</a>
                   <h3 class="box-title">El Concurso actual es {{ $competition->name }}</h3>
                 </div>
                 <!-- /.box-header -->

@@ -20,12 +20,14 @@
         <div class="row">
             <div class="box-body">
               <div class="box">
+                  <a href="{{ route('user.beneficiario') }}"><i class="fa fa-circle-o"></i> Regalar puntos</a>
                 <div class="box-header">
                   <h3 class="box-title">Tabla del Concurso </h3>
                 </div>
+                
                 @if (!empty($concurso))
                 <div class="col-md-12">
-                  
+
                   <div class="col-md-3">
                     <h4>Concurso</h4>{{ $concurso->name }}
                   </div>
@@ -38,7 +40,7 @@
                   <div class="col-md-3">
                     <h4>Puntos acumulados </h4><p>{{ $concurso->puntos[0]->sum }}</p>
                   </div> 
-
+  
                 </div>
                 @endif
                 @if (empty($concurso))

@@ -14,16 +14,18 @@ Route::group(['middleware' => 'cors'], function(){
 
 	Route::post('register', 'Api\IndexController@register');
 
-	//Route::resource('coupon','Api\UserCouponController');
-	Route::get('coupons/{id}','Api\UserCouponController@lista');
-	Route::post('couponStore','Api\UserCouponController@storeCoupon');
+	//CUpones
+	Route::get('coupons/{id}','Api\ApiCouponController@lista');
+	Route::post('couponStore','Api\ApiCouponController@storeCoupon');
+	
+	//COncurso, ranking y busqueda
+	
+	Route::get('concurso','Api\ApiConcursoController@index');
+	Route::get('ranking','Api\ApiConcursoController@ranking');
+	Route::get('beneficiario','ApiConcursoController@mostrarBeneficiaro');
+	Route::get('busqueda', 'ApiConcursoController@busquedaBeneficiaro');
 
-	Route::group(['prefix' => 'promotion'], function(){
-		Route::resource('', 'Api\PromotionController', ['only' => [
-		    'index', 'create', 'show', 'update', 'store'
-		]]);
-	});
-
+	
 });
 
 

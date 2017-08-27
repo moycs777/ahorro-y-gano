@@ -35,6 +35,7 @@
             @if(Auth::user()->level ==5)
              <li class=""><a href="{{ route('promotion.index') }}"><i class="fa fa-circle-o"></i> Anuncios</a></li>
              <li class=""><a href="{{ route('coupon.index') }}"><i class="fa fa-circle-o"></i> Cupones</a></li>
+             
              <li class=""><a href="{{ route('debt.index') }}"><i class="fa fa-circle-o"></i> Deudas</a></li>
              <li class=""><a href="{{ route('invoice.index') }}"><i class="fa fa-circle-o"></i> Facturas</a></li>
             @endif

@@ -7,8 +7,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Session;
-use App\Model\admin\admin;
 use Auth;
+
+use App\Model\admin\admin;
+use App\Reffer;
 
 class UserController extends Controller
 {
@@ -76,6 +78,21 @@ class UserController extends Controller
 
         $user->save();
 
+        //Tratar el evento en caso de ser referido
+        if (!$request->reffered_id == null) {
+           $reffered = new Reffer();
+           $reffered->user_id = $user->id;
+           $reffered->reffered_id = $request->reffered_id;
+           $reffered->save();
+
+
+           Session::flash('message', 'User added!');
+           Session::flash('status', 'success');
+
+           return redirect('admin/user');
+        }
+
+        //Cuando no se es referido
         Session::flash('message', 'User added!');
         Session::flash('status', 'success');
 

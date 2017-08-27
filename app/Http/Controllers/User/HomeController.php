@@ -21,9 +21,7 @@ class HomeController extends Controller
         return view('user.index',compact('ofertas'));
     }
 
-    
-
-    public function tag(tag $tag)
+    /*public function tag(tag $tag)
     {
         $posts = $tag->posts();
         return view('user.blog',compact('posts'));
@@ -33,5 +31,5 @@ class HomeController extends Controller
     {
         $posts = $category->posts();
         return view('user.blog',compact('posts'));
-    }
+    }*/
 }
