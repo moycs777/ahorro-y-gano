@@ -12,7 +12,8 @@
       Crear Concurso
       <small>El premio se tomara del 1% de las ganacias de A&G</small>
     </h1>
-    
+     
+
   </section>
 
   <!-- Main content -->
@@ -42,9 +43,28 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="subtitle">Recompenza</label>
-                    <input type="number" class="form-control" id="reward" name="reward" placeholder="Premio" min="1" max="50" required>
+                    <label for="subtitle">Recompenza (porcentaje)</label>
+                    <input type="number" class="form-control" id="reward" name="reward" placeholder="Premio" min="1" max="90" required>
                 </div>
+
+                <div class="form-group {{ $errors->has('expires') ? 'has-error' : ''}}">
+                    {!! Form::label('dead_line', 'Fecha Limite: ', ['class' => 'form-control']) !!}
+                        {!! Form::date('dead_line', null, ['min' => $dt ]) !!}
+                        {{-- <input type="date" name="dead_line" min="2017-09-14"> --}}
+                        {!! $errors->first('dead_line', '<p class="help-block">:message</p>') !!}
+                </div>
+
+                @if ($activa == null)
+                  <p>no hay concurso activo</p>
+                  <input type="hidden" name="active" value="1">
+                  <input type="hidden" name="ended" value="0">
+                @else
+                  <p>si hay concurso activo</p>
+                  {{-- {{$activa}} --}}
+                  <input type="hidden" name="active" value="0">
+                  <input type="hidden" name="ended" value="0">
+                  
+                @endif
                 
               </div>
               <div class="col-lg-6">

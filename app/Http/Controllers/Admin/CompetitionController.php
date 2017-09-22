@@ -44,7 +44,10 @@ class CompetitionController extends Controller
 
     public function create()
     {
-        return view('admin.competition.create');
+        $competitions = Competition::all();
+        $activa = Competition::where('active', '=', 1)->first();
+        $dt = Carbon::now()->format('Y-m-d');
+        return view('admin.competition.create', compact('dt', 'activa'));
 
     }
 
@@ -53,7 +56,8 @@ class CompetitionController extends Controller
 
         $concurso = Competition::where('active', '=', 1)->first();
         if ( empty($concurso) ) {
-            return "no hay concurso activo";
+            $message = "no hay concurso activo";
+            return view('admin.messages.message', compact('message'));
             # code...
         }
         $concurso->puntos = DB::select('select sum(points) as sum from ayg.coupons where created_at >= 2017-08-07 and ayg.coupons.consolidated = 1');
@@ -72,28 +76,25 @@ class CompetitionController extends Controller
             'name'=>'required',
             'goal' => 'required',
             'reward' => 'required',
+            'dead_line' => 'required',
             
             ]);
-        $competitions = Competition::all();
-        /* $puntos = db::raw('');*/
-        $activa = Competition::where('active', '=', 1)->first();
-        if (empty($activa)) {
+        /*$competitions = Competition::all();
+         $puntos = db::raw('');
+        $activa = Competition::where('active', '=', 1)->first();*/
+        $concurso = new Competition;
+        $concurso->name = $request->name;
+        $concurso->goal = $request->goal;
+        $concurso->reward = $request->reward;
+        $concurso->total = (($request->goal) * 0.01) * $request->reward / 100;
+        $concurso->active = $request->active;
+        $concurso->ended = $request->ended;
+        $concurso->dead_line = $request->dead_line;
+        $concurso->save();
 
-            $concurso = new Competition;
-            $concurso->name = $request->name;
-            $concurso->goal = $request->goal;
-            $concurso->reward = $request->reward;
-            $concurso->active = 1;
-            $concurso->save();
-
-            Session::flash('message', 'Coupon added!');
-            Session::flash('status', 'success');
-
-            return redirect('admin/competition');
-        }else{
-            return redirect('admin/competition');
-        }
-
+        Session::flash('message', 'Coupon added!');
+        Session::flash('status', 'success');
+        return redirect('admin/competition');       
     }
 
    

@@ -11,8 +11,7 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-     Deudas
-     @{{ message }}
+     Cupones Adeudados    
       
     </h1>
     
@@ -40,10 +39,10 @@
       <div class="box-body">
         <div class="box">
           <div class="box-header">
-            <h3 class="box-title">Marcar/Desmarcar Todos</h3>
-            <br>
+            {{-- <h3 class="box-title">Marcar/Desmarcar Todos</h3> --}}
+            {{-- <br>
             <input type="button" id="select_all"    
-                   />
+                   /> --}}
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -51,7 +50,7 @@
               <thead>
               <tr>
                 
-                <th>Pagar</th>
+               
                 <th>Nro</th>
                 <th>Tienda</th>
                 <th>Anuncio</th>
@@ -65,8 +64,7 @@
               
               @foreach ($debts as $item)
                 <tr>
-
-                  <th>
+                  {{-- <th>
                     @php
                       $price = ($item->points * 0.01);
                     @endphp
@@ -76,8 +74,7 @@
                         class="myCheckbox" 
                         
                     >
-                  </th>
-
+                  </th> --}}
                   <td>{{ $loop->index + 1 }}</td>
                   <td>{{ $item->store->name }}</td>
                   <td>{{ $item->promotion->name }}</td>
@@ -91,8 +88,9 @@
                     {{ $comision }} €
                   </td>
                   <td>
-                    
-                  </td>
+                    <div class="asd"><img class="img-responsive" WIDTH="50" HEIGHT="50" alt="{{ $item->promotion->name }}" src="{{  url($item->promotion->picture)}}" />
+                    </div>
+                  </td>                  
                 </tr>
               @endforeach
               </tbody>
@@ -109,8 +107,9 @@
       </div>
       <!-- /.box-body -->
       <div class="box-footer">
+        <p>Total a pagar: </p>{{ $total }}
         {{-- <p>Debe pagar: {{ $total }} €</p> --}}
-        <form action="{{   route('invoice.generate') }}" method="post" id="invoice">
+        {{-- <form action="{{   route('invoice.generate') }}" method="post" id="invoice">
           Comentario: <input type="text" name="comment"><br>
           <input type="hidden" name="auth_id" value="{{  Auth::user()->id }}">
           <input type="hidden" name="total" value="" id="total">
@@ -120,10 +119,10 @@
           <label for="Total">(esta funcion esta en fase beta) Total a pagar :</label>
           <label for="myalue" style="vertical-align: middle"></label>
           <br>
-          <input type="submit" value="pagar" class="class='col-lg-offset-5 btn btn-success'">
+          <input type="submit" value="pagar" class="class='btn btn-primary col-lg-offset-5'">
           
            {{ csrf_field() }}
-        </form>
+        </form> --}}
       </div>
       <!-- /.box-footer-->
     </div>

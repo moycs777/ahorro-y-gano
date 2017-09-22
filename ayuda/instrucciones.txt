@@ -4,6 +4,7 @@ https://www.youtube.com/watch?v=QQmWRdicvMI
 iniciar servidor:
 php artisan serve
 Crear una db llamada 'ayg'
+dd($request->all());
 ejecutar limpieza y creacion de tablas: 
 
 activar cors:
@@ -12,6 +13,10 @@ https://github.com/barryvdh/laravel-cors/issues/217
 https://github.com/barryvdh/laravel-cors
 
 https://www.youtube.com/watch?v=5hOMkFMxY90
+
+provincias y ciudades"
+https://github.com/alombarte/utilities/blob/master/sql/spain_provincias.sql
+mysql -u root -p ayg < provincias.sql
 
 anadir git repo:
 git init
@@ -46,3 +51,11 @@ https://www.youtube.com/watch?v=foQgktSU4Bo
 http://artisantearooms.com/the-belko-experiment-2016-spanish-full-movie-torrent-download
 
 https://www.youtube.com/watch?v=e4poifNgYZc
+
+
+activar logs:
+Thanks for the post. It was helpful. but my deployment is still not working
+
+copied my project to /var/www/
+Ran sudo chmod -R gu+w storage and sudo chmod -R guo+w storage
+login page shows. Yay!

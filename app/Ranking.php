@@ -11,7 +11,7 @@ class Ranking extends Model
 	protected $fillable = ['user_id', 'competition_id', 'sum'];
 
 	public function user(){
-	    return $this->belongsTo('App\Model\user\user');
+	    return $this->belongsTo('App\Model\user\User');
 	}
 
 	public function competition(){

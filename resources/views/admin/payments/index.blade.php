@@ -11,7 +11,7 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-     Pagos
+     Pagos 
       
     </h1>
     
@@ -40,8 +40,9 @@
         <div class="box">
           <div class="box-header">
             {{-- <a href="{{ route('pagos.tiendas') }}">Tiendas</a><br> --}}
-            <a href="{{ url('admin/pagos/tiendas') }}">Tiendas </a><br>
-            <a href="{{ route('pagos.delegados') }}">Delegados</a>
+            {{-- <a href="{{ url('admin/pagos/tiendas') }}">Tiendas </a><br> --}}
+            <a href="{{ route('pagos.delegados') }}">Delegados</a><br>
+            <a href="{{ route('pagos.agentes') }}">Agentes</a>
                   
           </div>
           <!-- /.box-header -->

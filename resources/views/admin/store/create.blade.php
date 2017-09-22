@@ -2,13 +2,17 @@
 
 @section('headSection')
 <link rel="stylesheet" href="{{ asset('admin/plugins/select2/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('admin/css/store.css') }}">
 @endsection
 @section('main-content')
+
+
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
-    <h1>Crear Tienda</h1>
+    <h1>Crear Tienda </h1>
     
   </section>
 
@@ -28,14 +32,17 @@
               {{-- id del usuario --}}
               <input type="hidden" name="auth_id" value="{{ Auth::id() }}">
               <input type="hidden" name="admin_id" value="{{ Auth::id() }}">
+              <input type="hidden" name="location" value="{{ Auth::id() }}">
+              <input type="hidden" name="url" id="url" value="{{route('ciudades')}}">
               {{-- id del usuario --}}
-                      <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
+            <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
                 {!! Form::label('name', 'Nombre: ', ['class' => 'col-sm-3 control-label']) !!}
                 <div class="col-sm-6">
                     {!! Form::text('name', null, ['class' => 'form-control', 'required' => 'required']) !!}
                     {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
                 </div>
             </div>
+
             <div class="form-group {{ $errors->has('nif_cif') ? 'has-error' : ''}}">
                 {!! Form::label('nif_cif', 'Nif Cif: ', ['class' => 'col-sm-3 control-label']) !!}
                 <div class="col-sm-6">
@@ -44,13 +51,7 @@
                 </div>
             </div>
 
-            {{-- <div class="form-group {{ $errors->has('category') ? 'has-error' : ''}}">
-                {!! Form::label('category', 'Category: ', ['class' => 'col-sm-3 control-label']) !!}
-                <div class="col-sm-6">
-                    {!! Form::number('category', null, ['class' => 'form-control', 'required' => 'required']) !!}
-                    {!! $errors->first('category', '<p class="help-block">:message</p>') !!}
-                </div>
-            </div> --}}
+           
             <div class="form-group {{ $errors->has('store') ? 'has-error' : ''}}">
               {!! Form::label('clasification_id', 'Tipo de tienda: ', ['class' => 'col-sm-3 control-label']) !!}
               <div class="col-sm-6">
@@ -78,30 +79,31 @@
                     {!! $errors->first('billing_address', '<p class="help-block">:message</p>') !!}
                 </div>
             </div>
+            
             <div class="form-group {{ $errors->has('state') ? 'has-error' : ''}}">
                 {!! Form::label('state', 'Provincia: ', ['class' => 'col-sm-3 control-label']) !!}
                 <div class="col-sm-6">
-                    {!! Form::text('state', null, ['class' => 'form-control', 'required' => 'required']) !!}
-                    {!! $errors->first('state', '<p class="help-block">:message</p>') !!}
+                    {{-- {!! Form::text('state', null, ['class' => 'form-control', 'required' => 'required']) !!}
+                    {!! $errors->first('state', '<p class="help-block">:message</p>') !!} --}}
+                    <select id="state" name="state" class="js-example-basic-single form-control" required>
+                     <option>Seleccione</option>
+                      @foreach ($states as $state)
+                        <option value="{{ $state->id_provincia }}" >{{ $state->provincia }}</option>
+                      @endforeach
+                    </select>
                 </div>
             </div>
             <div class="form-group {{ $errors->has('city') ? 'has-error' : ''}}">
-                {!! Form::label('city', 'Ciudad: ', ['class' => 'col-sm-3 control-label']) !!}
+              {!! Form::label('city', 'Ciudad: ', ['class' => 'col-sm-3 control-label']) !!}
                 <div class="col-sm-6">
-                    {!! Form::text('city', null, ['class' => 'form-control', 'required' => 'required']) !!}
-                    {!! $errors->first('city', '<p class="help-block">:message</p>') !!}
-                </div>
-            </div>
-            <div class="form-group {{ $errors->has('location') ? 'has-error' : ''}}">
-                {!! Form::label('location', 'Geo Localizacion: ', ['class' => 'col-sm-3 control-label']) !!}
-                <div class="col-sm-6">
-                    {!! Form::text('location', null, ['class' => 'form-control', 'required' => 'required']) !!}
-                    {!! $errors->first('location', '<p class="help-block">:message</p>') !!}
-                </div>
-                <p>asd</p>
-                <button onclick="refrescarUbicacion()">Refrescar</button>
-                <div id="asd"></div>
-            </div>
+                    {{-- {!! Form::text('city', null, ['class' => 'form-control', 'required' => 'required']) !!}
+                    {!! $errors->first('city', '<p class="help-block">:message</p>') !!} --}}
+                  <select class="form-control js-example-basic-single" id="categoria_hijo" name="city" required>
+                     <option>Seleccione</option>
+                 </select>
+                </div>               
+            </div>   
+
             <div class="form-group {{ $errors->has('zip') ? 'has-error' : ''}}">
                 {!! Form::label('zip', 'Zip: ', ['class' => 'col-sm-3 control-label']) !!}
                 <div class="col-sm-6">
@@ -187,14 +189,45 @@
   <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+
+
+
 @endsection
 @section('footerSection')
 <script src="{{ asset('admin/plugins/select2/select2.full.min.js') }}"></script>
 <script src="{{  asset('admin/ckeditor/ckeditor.js') }}"></script>
 <script>
+    var url_home_ajax = document.getElementById('url').value;
+    //console.log(url_home_ajax);
+
     $(function () {
       $(".select2").select2();
-      
+      $(".js-example-basic-single").select2();
+
+      console.log('creacion de tiendas 0.1.2');
+          /*  --------------------------*/
+          //enviar categoria_hijos al back
+          $('#state').on('change',function () {
+              var id = $('#state option:selected').val();
+              console.log(id);
+
+              $.ajax({
+                url: url_home_ajax + '/' + id
+              })
+              .done(function( data ) {
+              
+                $('#categoria_hijo').html('');
+                data.forEach(function(element, i, a) {
+                    console.log("elemento "+element.nombre);
+                    console.log("id_provincia: "+element.id_provincia);
+                    console.log("i: "+i);
+                    $('#categoria_hijo').append('<option value= "'+ element.id_municipio +'">'   + element.nombre +  '</option>');
+                    
+                });
+                
+              });
+              
+          });
       
     });
 </script>

@@ -34,7 +34,7 @@
                       <th>Nombre:</th>
                       <th>Meta en puntos:</th>
                       <th>Recompensa</th>
-                      <th>Fecha de inicio</th>
+                      
                       <th>Puntos Acumulados</th>
                     </tr>
                     </thead>
@@ -54,8 +54,10 @@
                             $points += $item->points ;
                           @endphp
                         @endif --}}
-                        <td>{{ $competition->reward }}</td>
-                        <td>{{ $competition->created_at }}</td>
+                        <td>{{-- {{ $competition->reward }} --}}
+                          {{  ( ( $competition->goal * 0.01 ) * $competition->reward ) / 100 }} €
+
+                        </td>
                         
                       </tr>
                       

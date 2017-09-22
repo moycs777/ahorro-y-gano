@@ -1,101 +1,96 @@
 @extends('admin.layouts.app')
 
 @section('headSection')
-<link rel="stylesheet" href="{{ asset('admin/plugins/select2/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('admin/plugins/datatables/dataTables.bootstrap.css') }}">
 @endsection
+
 @section('main-content')
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
-    <h1>Tiendas</h1>
-    
+    <h1>
+     tiendas
+    </h1>    
   </section>
-
   <!-- Main content -->
   <section class="content">
-    <div class="row">
-      <div class="col-md-12">
-        <!-- general form elements -->
-        <div class="box box-primary">
-          <div class="box-header with-border">
-          </div>
-          @include('includes.messages')
-          <!-- /.box-header -->
-          <!-- form start -->
-          <h1>Tiendas <a href="{{ url('admin/store/create') }}" class="btn btn-primary pull-right btn-sm">Add New Store</a></h1>
-          <div class="table table-responsive">
-              <table class="table table-bordered table-striped table-hover" id="tbladmin/store">
-                  <thead>
-                      <tr>
-                          <th>ID</th><th>Name</th><th>Nif Cif</th><th>Category</th><th>Actions</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                  @foreach($store as $item)
-                      <tr>
-                          <td>{{ $item->id }}</td>
-                          <td><a href="{{ url('admin/store', $item->id) }}">{{ $item->name }}</a></td><td>{{ $item->nif_cif }}</td>
-                          <td>{{ $item->clasification }}</td>
-                          <td>
-                              <a href="{{ url('admin/store/' . $item->id . '/edit') }}" class="btn btn-primary btn-xs">Update</a> 
-                              {!! Form::open([
-                                  'method'=>'DELETE',
-                                  'url' => ['admin/store', $item->id],
-                                  'style' => 'display:inline'
-                              ]) !!}
-                                  {!! Form::submit('Delete', ['class' => 'btn btn-danger btn-xs']) !!}
-                              {!! Form::close() !!}
-                          </td>
-                      </tr>
-                  @endforeach
-                  </tbody>
-              </table>
-          </div>
-        </div>
-        <!-- /.box -->
-
-        
+    <!-- Default box -->
+    <div class="box">
+      <div class="box-header with-border">
       </div>
-      <!-- /.col-->
+      <div class="box-body">
+        <div class="box">
+          <div class="box-header">
+            <h1>Tiendas <a href="{{ url('admin/store/create') }}" class="btn btn-primary pull-right btn-sm">Crear Tienda</a></h1>
+          </div>
+          <!-- /.box-header -->
+          <div class="box-body">
+            <table id="example1" class="table table-bordered table-striped">
+              <thead>
+              <tr>
+                <th>ID</th><th>Name</th><th>Nif Cif</th><th>Categoria</th><th>Acciones</th>
+              </tr>
+              </thead>
+              <tbody>
+              @if (!empty($store))
+                @foreach ($store as $item)
+                  <tr>
+                      <td>{{ $item->id }}</td>
+                      <td>
+                        <a href="{{ url('admin/store', $item->id . '/edit' ) }}">{{ $item->name }}</a></td><td>{{ $item->nif_cif }}</td>
+                      <td> 
+                        @if ($item->clasification)
+                          @foreach ($item->clasification as $element)
+                            {{$element->name}}
+                          @endforeach
+                        @endif
+                      </td>
+                      
+
+                      <td>
+                          <a href="{{ url('admin/store/' . $item->id . '/edit') }}" class="btn btn-primary btn-xs">Actualzar</a> 
+                          {!! Form::open([
+                              'method'=>'DELETE',
+                              'url' => ['admin/store', $item->id],
+                              'style' => 'display:inline'
+                          ]) !!}
+                              {!! Form::submit('Elimninar', ['class' => 'btn btn-danger btn-xs']) !!}
+                          {!! Form::close() !!}
+                      </td>
+                    </tr>
+                @endforeach
+              @endif
+              </tbody>
+             
+            </table>
+          </div>
+          <!-- /.box-body -->
+        </div>
+      </div>
+      <!-- /.box-body -->
+      <div class="box-footer">
+      </div>
+      <!-- /.box-footer-->
     </div>
-    <!-- ./row -->
+    <!-- /.box -->
   </section>
   <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 @endsection
 @section('footerSection')
-<script src="{{ asset('admin/plugins/select2/select2.full.min.js') }}"></script>
-<script src="{{  asset('admin/ckeditor/ckeditor.js') }}"></script>
+<script src="{{ asset('admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('admin/plugins/datatables/dataTables.bootstrap.min.js') }}"></script>
 <script>
-    $(function () {
-      // Replace the <textarea id="editor1"> with a CKEditor
-      // instance, using default configuration.
-      CKEDITOR.replace('editor1');
-      //bootstrap WYSIHTML5 - text editor
-      $(".textarea").wysihtml5();
+  $(function () {
+    /*$("#example1").DataTable();*/
+    $("#example1").DataTable( {
+      "pageLength": 100
     });
-</script>
-<script>
-  $(document).ready(function() {
-    $(".select2").select2();
   });
 </script>
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('#tbladmin/store').DataTable({
-            columnDefs: [{
-                targets: [0],
-                visible: false,
-                searchable: false
-                },
-            ],
-            order: [[0, "asc"]],
-        });
-    });
-</script>
 @endsection
-
-{{--  --}}
+                                    
+          
 

@@ -1,0 +1,35 @@
+--------------------------------------------------------------------------------
+   En la tabla usuarios vamos a tener dos registros en la bbdd:  P.activos y P.espera.
+ P.activos= puntos conseguidos directa o indirectamente ( por los hijos). Estos puntos ya están participando en el concurso.
+P.espera= puntos que han sido proporcionados por los hijos pero todavía no han sido utilizados, porque no se ha comprado aun.
+Los usuarios no pueden tener una cantidad distinta de 0 en ambos registros simultamenamente. Cada vez que se produce una primera entrega de puntos por una compra propia a un usuario, debemos de resetear los puntos en espera (P.espera=0).
+ Para desarrollar la logica vamos a tener en cuenta estos dos campos anteriores y si el Padre es Admin o no.
+
+ Bueno el caso 1 y 2 me dijiste que no hacia falta pero lo dejo aquí por si queremos implementarlo asi
+--------------------------------------------------------------------------------
+   *  Caso 1:   padre == admin   &   P.activos(user)==0 
+    -----> P.activos(user)= P.espera(user) + P.obtenidos
+    -----> P.espera (user) = 0
+   *  Caso 2:  padre == admin   &   P.activos(user)!=0 
+    -----> P.activos(user)= P.activos(user)  + P.obtenidos
+El caso  3 es ocurre cuando el usuario ya ha comprado anteriormente y el padre todavía no ha comprado
+   *  Caso 3: padre != admin  &   P.activos( user)!=0     &    P.activos (padre) == 0
+    -----> P.activos(user)= P.activos(user) + P.obtenidos
+    -----> P.espera (padre)= P.espera (padre) + P.obtenidos (%  función nº hijos)
+El caso  4 es ocurre cuando tanto el usuario como su padre ya han comprado con anterioridad.
+
+   *  Caso 4:  padre != admin &   P.activos( user)!=0  &    P.activos (padre) != 0
+    ----->  P.activos(user)= P.activos(user) + P.obtenidos
+    ----->  P.activos(padre)= P.activos(padre) + P.obtenidos (%  función nº hijos)
+
+El caso  5  ocurre cuando el usuario todavía no ha comprado pero el padre si ha comprado
+   *  Caso 5: padre != admin   &   P.activos( user)==0  &     P.activos (padre) != 0
+    -----> P. activos( user)= P.espera(user) + P. obtenidos
+    -----> P.espera (user) = 0
+    -----> P.activos(padre)= P.activos(padre) + P.obtenidos (%  función nº hijos)
+El caso 6 ocurre cuando ni el usuario ni el padre han comprado todavía.
+   *  Caso 6: padre != admin   &   P.activos( user)==0  &     P.activos (padre) == 0
+    ----->  P. activos( user)= P.espera(user) + P. obtenidos
+    ----->  P.espera (user) = 0
+    ----->  P.espera (padre)= P.espera (padre) + P.obtenidos (%  función nº hijos)  
+  --------------------------------------------------------------------------------

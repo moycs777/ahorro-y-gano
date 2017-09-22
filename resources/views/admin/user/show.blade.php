@@ -21,7 +21,9 @@
     <!-- Default box -->
     <div class="box">
       <div class="box-header with-border">
-        <a class='col-lg-offset-5 btn btn-success' href="{{ route('user.create') }}">Crear nuevo usuario</a>
+        @if(Auth::user()->level ==1 or Auth::user()->level < 3)        
+          <a class='col-lg-offset-5 btn btn-success' href="{{ route('user.create') }}">Crear nuevo usuario</a>
+        @endif
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
             <i class="fa fa-minus"></i></button>
@@ -42,7 +44,7 @@
                 <th>S.No</th>
                 <th>Nombre</th>
                 <th>email</th>
-                <th>status</th>
+                <th>Cargo</th>
                 <th>Creado</th>
                 <th>Editar</th>
                 <th>Borrar</th>
@@ -54,7 +56,17 @@
                   <td>{{ $loop->index + 1 }}</td>
                   <td>{{ $admin->name }}</td>
                   <td>{{ $admin->email }}</td>
-                  <td>{{ $admin->status }}</td>
+                  <td>
+                    @if ($admin->level == 1)
+                      Administrador
+                    @endif
+                    @if ($admin->level == 2)
+                      Delegado
+                    @endif
+                    @if ($admin->level == 3)
+                      Comercial
+                    @endif
+                  </td>
                   <td>{{ $admin->created_at }}</td>
                   <td><a href="{{ route('user.edit',$admin->id) }}"><span class="glyphicon glyphicon-edit"></span></a></td>
                   <td>

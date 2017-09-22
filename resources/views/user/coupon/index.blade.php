@@ -31,6 +31,7 @@
                     <thead>
                     <tr>
                       <th>Nro</th>
+                      <th>Codigo de Cupon</th>
                       <th>Anuncio</th>
                       <th>Tienda</th>
                       <th></th>
@@ -43,6 +44,7 @@
                     @foreach ($coupons as $item)
                       <tr>
                         <td>{{ $loop->index + 1 }}</td>
+                        <td>{{ $item->id }}</td>
                         <td>{{ $item->promotion->name }}</td>
                         <td>{{ $item->store->name }}</td>
                         <td><img class="img-responsive" WIDTH="100" HEIGHT="100" alt="" src="{{  url($item->promotion->picture)}}" /></td>

@@ -18,7 +18,10 @@ class CreateCompetitionsTable extends Migration
             $table->string('name');
             $table->integer('goal');
             $table->integer('reward');
+            $table->double('total');
             $table->boolean('active');
+            $table->boolean('ended');
+            $table->date('dead_line');
             $table->timestamps();
         });
     }

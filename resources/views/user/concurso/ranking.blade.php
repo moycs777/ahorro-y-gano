@@ -35,10 +35,10 @@
                     <h4>Meta</h4>{{ $concurso->goal }}
                   </div>
                   <div class="col-md-3">
-                    <h4>Ganacia </h4><p>{{  ( $concurso->goal * 0.01 ) / $concurso->reward  }} €</p>
+                    <h4>Ganacia </h4> {{  ( ( $concurso->goal * 0.01 ) * $concurso->reward ) / 100 }} €
                   </div>
                   <div class="col-md-3">
-                    <h4>Puntos acumulados </h4><p>{{ $concurso->puntos[0]->sum }}</p>
+                    <h4>Puntos acumulados </h4>{{ $concurso->puntos[0]->sum }}
                   </div> 
   
                 </div>
@@ -66,8 +66,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                      @if (! empty($ganadores) )
-                      @foreach ($ganadores as $item)
+                      @if (! empty($puntos_normales) )
+                      @foreach ($puntos_normales as $item)
                         <tr>
                           <td> {{ $loop->index + 1 }} </td>
                           <td>{{ $item->user->email}}</td>

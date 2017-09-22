@@ -5,8 +5,16 @@
 @section('sub-heading','Gana fabulosos premios')
 
 @section('main-content')
+	
 	<!-- Main Content -->
 	<div class="container">
+		<div class="row">
+			<p>Click the button to get your coordinates.</p>
+
+				<button onclick="getLocation()">Buscar tiendas cercanas</button>
+
+			<p id="demo"></p>
+		</div>
 	    <div class="row">
 	    <p>Ofertas</p>
 	    @foreach ($ofertas as $item)
@@ -25,9 +33,16 @@
 	                    </h3>
 	                </a>
 	                <p class="post-meta">Tienda:  <a href="#">{{  $item->store->name}}</a> </p>
+	                <p class="post-meta">Provincia: {{  $item->store->state}}</p>
+	                <p class="post-meta">Provincia: {{  $item->store->city}}</p>
 	                <p class="post-meta">Se creo hace:  {{ $item->created_at->diffForHumans() }}</p>
 	                <p class="post-meta">Vence:   {{ $item->expires }}</p>
-	                <p>Precio: {{  $item->price_with_offert}} €</p>
+	                @if ($item->type ==1)
+	                	<p>Precio: {{  $item->price_with_offert}} €</p>
+	                @endif
+	                @if ($item->type ==2)
+	                	<p>A partir de: {{  $item->price_not_offert}} €</p>
+	                @endif
 	                <input type="submit" class="btn btn-primary block" value="Descargar">
 	            </div>
             </form>
@@ -49,4 +64,18 @@
 	</div>
 
 	<hr>
+<script>
+	var x = document.getElementById("demo");
+	function getLocation() {
+	    if (navigator.geolocation) {
+	        navigator.geolocation.getCurrentPosition(showPosition);
+	    } else {
+	        x.innerHTML = "Geolocation is not supported by this browser.";
+	    }
+	}
+	function showPosition(position) {
+	    x.innerHTML = "Latitude: " + position.coords.latitude + 
+	    "<br>Longitude: " + position.coords.longitude; 
+	}
+</script>
 @endsection

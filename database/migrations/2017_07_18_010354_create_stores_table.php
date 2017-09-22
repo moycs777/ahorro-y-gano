@@ -18,8 +18,8 @@ class CreateStoresTable extends Migration
             $table->integer('clasification_id');
             $table->string('address');
             $table->string('billing_address');
-            $table->string('state');
-            $table->string('city');
+            $table->integer('state');
+            $table->integer('city');
             $table->string('location');
             $table->string('zip');
             $table->string('phone_1');

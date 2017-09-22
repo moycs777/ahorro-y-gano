@@ -40,6 +40,7 @@ class Kernel extends HttpKernel
         ],
 
         'cors' =>[
+            //\App\Http\Middleware\CORS::class
             // \Barryvdh\Cors\HandleCors::class,
         ],
 
@@ -50,13 +51,7 @@ class Kernel extends HttpKernel
         ],
     ];
 
-    /**
-     * The application's route middleware.
-     *
-     * These middleware may be assigned to groups or used individually.
-     *
-     * @var array
-     */
+    
     protected $routeMiddleware = [
         'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,

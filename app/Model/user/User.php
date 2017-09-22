@@ -10,7 +10,7 @@ class User extends Authenticatable
     use Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password', 'reffer_id',
+        'name', 'email', 'password', 'reffer_id','confirmed','confirmation_code'
     ];
     
     public function coupon(){

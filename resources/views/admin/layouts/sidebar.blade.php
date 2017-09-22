@@ -25,11 +25,11 @@
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-        <li class="header">Opciones</li>
+        <li class="header">Opciones {{Auth::user()->id}}</li>
         <li class="active treeview">
 
             @if(Auth::user()->level < 5)
-              <li class=""><a href="{{ route('store.index') }}"><i class="fa fa-circle-o"></i> Tiendas</a></li>
+              <li class=""><a href="{{ route('store.index') }}"><i class="fa fa-circle-o"></i> Negocios</a></li>
             @endif
 
             @if(Auth::user()->level ==5)
@@ -37,16 +37,22 @@
              <li class=""><a href="{{ route('coupon.index') }}"><i class="fa fa-circle-o"></i> Cupones</a></li>
              
              <li class=""><a href="{{ route('debt.index') }}"><i class="fa fa-circle-o"></i> Deudas</a></li>
-             <li class=""><a href="{{ route('invoice.index') }}"><i class="fa fa-circle-o"></i> Facturas</a></li>
+             <li class=""><a href="{{ route('invoice.index') }}"><i class="fa fa-circle-o"></i> Facturas Pagadas</a></li>
             @endif
 
             @if(Auth::user()->level <4)
              <li class=""><a href="{{ route('commission.index') }}"><i class="fa fa-circle-o"></i> Comisiones</a></li>
             @endif
 
+            {{-- @if(Auth::user()->level ==2 || Auth::user()->level ==3 )
+             <li class=""><a href="{{ route('commission.index') }}"><i class="fa fa-circle-o"></i> Pagos de de mis tiendas</a></li>
+            @endif --}}
+
             @if(Auth::user()->level ==1)
               <li class=""><a href="{{ route('clasification.index') }}"><i class="fa fa-circle-o"></i> Sectores</a></li>
-              <li class=""><a href="{{ route('payment.index') }}"><i class="fa fa-circle-o"></i> Pagos</a></li>
+              <li class=""><a href="{{ route('payment.index') }}"><i class="fa fa-circle-o"></i> Pagos Pendientes</a></li>
+              <li class=""><a href="{{ url('admin/pagos/betatiendas') }}"><i class="fa fa-circle-o"></i>Beta Cobros  Pendientes</a></li>
+              <li class=""><a href="{{ url('admin/pagos/tiendas') }}"><i class="fa fa-circle-o"></i> Cobros Pendientes</a></li>
               <li class=""><a href="{{ route('competition.index') }}"><i class="fa fa-circle-o"></i> Concursos</a></li>
             @endif
             
@@ -57,11 +63,16 @@
 
             @if(Auth::user()->level <5)
               <li class=""><a href="{{ route('user.index') }}"><i class="fa fa-circle-o"></i> Usuarios</a></li>
-            @endif
               
               <li class=""><a href="{{ route('ranking') }}"><i class="fa fa-circle-o"></i> Puntuacion del concurso</a></li>
+            @endif
+              
 
-            <li class=""><a href="{{ route('raiz') }}"><i class="fa fa-circle-o"></i> Index</a></li>
+            <li class=""><a href="{{ route('raiz') }}"><i class="fa fa-circle-o"></i> Ahorro y Gano</a></li>
+            @if(Auth::user()->level ==1)
+              <li class=""><a href="{{ route('policies.index') }}"><i class="fa fa-circle-o"></i> Politicas de privacidad</a></li>
+              <li class=""><a href="{{ route('clientes.index') }}"><i class="fa fa-circle-o"></i> Listado de Usuarios</a></li>
+            @endif
         </li>
         
         

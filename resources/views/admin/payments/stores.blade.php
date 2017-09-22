@@ -11,7 +11,7 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-     Pagos de Tiendas
+     Cobor a las Tiendas
       
     </h1>
     
@@ -40,7 +40,9 @@
         <div class="box">
           <div class="box-header">
              @foreach ($stores as $item)
-                  <p>{{ $item->name }}</p>
+                  <a href="{{ route('listar.tienda', $item->id) }}">
+                    <p>{{ $item->name }}</p>
+                  </a>
               @endforeach
           </div>
           <!-- /.box-header -->

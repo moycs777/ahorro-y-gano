@@ -86,6 +86,12 @@
                        </button>
                    </div>
                </div>
+               <div class="form-group">
+                   <div class="col-md-6 col-md-offset-4">
+                     <a href="{{ route('politicas') }}" target="blank">Ver politicas</a><br>
+                     <input type="checkbox" value="check" id="agree" required checked /> He leido y acepto las politicas de uso y privacidad
+                   </div>
+               </div>
            </form>
         </div>
     </div>

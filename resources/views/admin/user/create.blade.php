@@ -7,7 +7,7 @@
   <section class="content-header">
     <h1>
       Crear usuario
-      <small>Administradpor, Agente, Vendedor</small>
+      <small>Administradpor, Delegado, Agente</small>
     </h1>
      @include('includes.messages')
     
@@ -73,9 +73,9 @@
                   <input type="radio" name="level" value="2">Delegado <br>
                 @endif
                 @if(Auth::user()->level ==1 or Auth::user()->level ==2)
-                <input type="radio" name="level" value="3">  Agente
+                  <input type="radio" name="level" value="3">  Agente
                 @endif
-                {{ Auth::user()->level }}
+                
               </div>
 				
 			</div>
@@ -100,9 +100,6 @@
       </div>
             </div>
             <!-- /.box-body -->
-			
-		
-
             <div class="box-footer">
               <button type="submit" class="btn btn-primary">Grabar</button>
             </div>

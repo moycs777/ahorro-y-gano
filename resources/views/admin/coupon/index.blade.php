@@ -33,6 +33,7 @@
               <thead>
               <tr>
                 <th>Nro</th>
+                <th>Codigo de Cupon</th>
                 <th>Tienda</th>
                 <th>Anuncio</th>
                 <th>Cliente</th>
@@ -47,6 +48,7 @@
               @foreach ($coupon as $item)
                 <tr>
                   <td>{{ $loop->index + 1 }}</td>
+                  <td>{{ $item->id }}</td>
                   <td>{{ $item->store->name }}</td>
                   <td>{{ $item->promotion->name }}</td>
                   <td>{{ $item->user->email }}</td>

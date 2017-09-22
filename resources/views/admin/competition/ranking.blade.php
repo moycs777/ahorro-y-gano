@@ -42,7 +42,8 @@
                 <h4>Meta</h4>{{ $concurso->goal }}
               </div>
               <div class="col-md-4">
-                <h4>Ganacia </h4><p>{{  ( $concurso->goal * 0.01 ) / $concurso->reward  }} €</p>
+               {{-- ( ($item->goal * 0.01) * $item->reward ) / 100 }} € --}}
+                <h4>Ganacia </h4><p>{{  ( ( $concurso->goal * 0.01 ) * $concurso->reward ) / 100 }} €</p>
                  
               </div> 
 

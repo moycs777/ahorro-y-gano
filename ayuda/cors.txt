@@ -1,0 +1,4 @@
+https://blog.nikhilben.com/2015/09/02/laravel5-rest-api-and-cors/
+https://laracasts.com/discuss/channels/requests/laravel-5-cors-headers-with-filters?page=3
+http://albanafmeti.com/2016/using-laravel-passport-with-an-angular2-client-app/
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS

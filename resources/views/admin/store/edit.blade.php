@@ -2,6 +2,7 @@
 
 @section('headSection')
 <link rel="stylesheet" href="{{ asset('admin/plugins/select2/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('admin/css/store.css') }}">
 @endsection
 @section('main-content')
 <!-- Content Wrapper. Contains page content -->
@@ -26,7 +27,8 @@
           <!-- form start -->
           
           {{-- start stub crud  --}}
-            <h1>Edit Store</h1>
+            <h1>Editar Tienda</h1>
+            {{-- {{ $store }} --}}
             <hr/>
 
             {!! Form::model($store, [
@@ -34,13 +36,18 @@
                 'url' => ['admin/store', $store->id],
                 'class' => 'form-horizontal'
             ]) !!}
+            
+            <input type="hidden" name="auth_id" value="{{ $store->auth_id }}">
+            <input type="hidden" name="admin_id" value="{{ $store->admin_id }}">
+            <input type="hidden" name="location" value="{{ Auth::id() }}">
+            <input type="hidden" name="url" id="url" value="{{route('ciudades')}}">
 
-                        <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
-                {!! Form::label('name', 'Name: ', ['class' => 'col-sm-3 control-label']) !!}
-                <div class="col-sm-6">
-                    {!! Form::text('name', null, ['class' => 'form-control', 'required' => 'required']) !!}
-                    {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
-                </div>
+            <div class="form-group {{ $errors->has('name') ? 'has-error' : ''}}">
+            {!! Form::label('name', 'Name: ', ['class' => 'col-sm-3 control-label']) !!}
+            <div class="col-sm-6">
+                {!! Form::text('name', null, ['class' => 'form-control', 'required' => 'required']) !!}
+                {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
+            </div>
             </div>
             <div class="form-group {{ $errors->has('nif_cif') ? 'has-error' : ''}}">
                 {!! Form::label('nif_cif', 'Nif Cif: ', ['class' => 'col-sm-3 control-label']) !!}
@@ -49,13 +56,45 @@
                     {!! $errors->first('nif_cif', '<p class="help-block">:message</p>') !!}
                 </div>
             </div>
-            <div class="form-group {{ $errors->has('category') ? 'has-error' : ''}}">
-                {!! Form::label('category', 'Category: ', ['class' => 'col-sm-3 control-label']) !!}
+         
+            <div class="form-group {{ $errors->has('store') ? 'has-error' : ''}}">
+              {!! Form::label('clasification_id', 'Tipo de tienda: ', ['class' => 'col-sm-3 control-label']) !!}
+              <div class="col-sm-6">
+                  {{-- {!! Form::text('store', null, ['class' => 'form-control', 'required' => 'required']) !!} --}}
+                  <select class="form-control" data-placeholder="Categorias"  name="clasification_id">
+                    @foreach ($clasifications as $clasification)
+                      <option value="{{ $clasification->id }}">{{ $clasification->name }}</option>
+                    @endforeach
+                  </select>
+                  {!! $errors->first('clasification', '<p class="help-block">:message</p>') !!}
+              </div>
+            </div>
+            {{-- estado --}}
+            <div class="form-group {{ $errors->has('state') ? 'has-error' : ''}}">
+                {!! Form::label('state', 'Provincia: ', ['class' => 'col-sm-3 control-label']) !!}
                 <div class="col-sm-6">
-                    {!! Form::number('category', null, ['class' => 'form-control', 'required' => 'required']) !!}
-                    {!! $errors->first('category', '<p class="help-block">:message</p>') !!}
+                    {{-- {!! Form::text('state', null, ['class' => 'form-control', 'required' => 'required']) !!}
+                    {!! $errors->first('state', '<p class="help-block">:message</p>') !!} --}}
+                    <select id="state" name="state" class="js-example-basic-single form-control" required>
+                     <option>Seleccione</option>
+                      @foreach ($states as $state)
+                        <option value="{{ $state->id_provincia }}" >{{ $state->provincia }}</option>
+                      @endforeach
+                    </select>
                 </div>
             </div>
+            {{-- ciudad --}}
+            <div class="form-group {{ $errors->has('city') ? 'has-error' : ''}}">
+              {!! Form::label('city', 'Ciudad: ', ['class' => 'col-sm-3 control-label']) !!}
+                <div class="col-sm-6">
+                    {{-- {!! Form::text('city', null, ['class' => 'form-control', 'required' => 'required']) !!}
+                    {!! $errors->first('city', '<p class="help-block">:message</p>') !!} --}}
+                  <select class="form-control js-example-basic-single" id="categoria_hijo" name="city" required>
+                     <option></option>
+                 </select>
+                </div>               
+            </div> 
+
             <div class="form-group {{ $errors->has('address') ? 'has-error' : ''}}">
                 {!! Form::label('address', 'Address: ', ['class' => 'col-sm-3 control-label']) !!}
                 <div class="col-sm-6">
@@ -70,20 +109,7 @@
                     {!! $errors->first('billing_address', '<p class="help-block">:message</p>') !!}
                 </div>
             </div>
-            <div class="form-group {{ $errors->has('state') ? 'has-error' : ''}}">
-                {!! Form::label('state', 'State: ', ['class' => 'col-sm-3 control-label']) !!}
-                <div class="col-sm-6">
-                    {!! Form::text('state', null, ['class' => 'form-control', 'required' => 'required']) !!}
-                    {!! $errors->first('state', '<p class="help-block">:message</p>') !!}
-                </div>
-            </div>
-            <div class="form-group {{ $errors->has('city') ? 'has-error' : ''}}">
-                {!! Form::label('city', 'City: ', ['class' => 'col-sm-3 control-label']) !!}
-                <div class="col-sm-6">
-                    {!! Form::text('city', null, ['class' => 'form-control', 'required' => 'required']) !!}
-                    {!! $errors->first('city', '<p class="help-block">:message</p>') !!}
-                </div>
-            </div>
+            
             <div class="form-group {{ $errors->has('location') ? 'has-error' : ''}}">
                 {!! Form::label('location', 'Location: ', ['class' => 'col-sm-3 control-label']) !!}
                 <div class="col-sm-6">
@@ -115,12 +141,12 @@
             <div class="form-group {{ $errors->has('email') ? 'has-error' : ''}}">
                 {!! Form::label('email', 'Email: ', ['class' => 'col-sm-3 control-label']) !!}
                 <div class="col-sm-6">
-                    {!! Form::text('email', null, ['class' => 'form-control', 'required' => 'required']) !!}
+                    {{-- {!! Form::text('email', null, ['class' => 'form-control', 'required' => 'required']) !!} --}}
+                    <input type="text" name="email" class="form-control" value="{{ $store->email }}" disabled>
                     {!! $errors->first('email', '<p class="help-block">:message</p>') !!}
                 </div>
             </div>
 
-            
             <div class="form-group {{ $errors->has('contact') ? 'has-error' : ''}}">
                 {!! Form::label('contact', 'Contact: ', ['class' => 'col-sm-3 control-label']) !!}
                 <div class="col-sm-6">
@@ -148,15 +174,12 @@
                 </div>
             </div>
 
-
             <div class="form-group">
                 <div class="col-sm-offset-3 col-sm-3">
                     {!! Form::submit('Update', ['class' => 'btn btn-primary form-control']) !!}
                 </div>
             </div>
             {!! Form::close() !!}
-
-
 
           {{-- End stub crud  --}}
         </div>
@@ -174,19 +197,39 @@
 @endsection
 @section('footerSection')
 <script src="{{ asset('admin/plugins/select2/select2.full.min.js') }}"></script>
-<script src="{{  asset('admin/ckeditor/ckeditor.js') }}"></script>
 <script>
-    $(function () {
-      // Replace the <textarea id="editor1"> with a CKEditor
-      // instance, using default configuration.
-      CKEDITOR.replace('editor1');
-      //bootstrap WYSIHTML5 - text editor
-      $(".textarea").wysihtml5();
-    });
-</script>
-<script>
-  $(document).ready(function() {
+  var url_home_ajax = document.getElementById('url').value;
+  //console.log(url_home_ajax);
+
+  $(function () {
     $(".select2").select2();
+    $(".js-example-basic-single").select2();
+
+    console.log('creacion de tiendas 0.1.2');
+        /*  --------------------------*/
+        //enviar categoria_hijos al back
+        $('#state').on('change',function () {
+            var id = $('#state option:selected').val();
+            console.log(id);
+
+            $.ajax({
+              url: url_home_ajax + '/' + id
+            })
+            .done(function( data ) {
+            
+              $('#categoria_hijo').html('');
+              data.forEach(function(element, i, a) {
+                  console.log("elemento "+element.nombre);
+                  console.log("id_provincia: "+element.id_provincia);
+                  console.log("i: "+i);
+                  $('#categoria_hijo').append('<option value= "'+ element.id_municipio +'">'   + element.nombre +  '</option>');
+                  
+              });
+              
+            });
+            
+        });
+    
   });
 </script>
 @endsection

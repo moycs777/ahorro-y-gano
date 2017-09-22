@@ -20,10 +20,10 @@ Route::group(['middleware' => 'cors'], function(){
 	
 	//COncurso, ranking y busqueda
 	
-	Route::get('concurso','Api\ApiConcursoController@index');
+	Route::get('concurso','Api\ApiConcursoController@concurso');
 	Route::get('ranking','Api\ApiConcursoController@ranking');
-	Route::get('beneficiario','ApiConcursoController@mostrarBeneficiaro');
-	Route::get('busqueda', 'ApiConcursoController@busquedaBeneficiaro');
+	Route::get('beneficiario','Api\ApiConcursoController@mostrarBeneficiaro');
+	Route::get('busqueda', 'Api\ApiConcursoController@busquedaBeneficiaro');
 
 	
 });

@@ -15,15 +15,11 @@
     </h1>
     
   </section>
- 
-
   <!-- Main content -->
-  <section class="content">
-    
+  <section class="content">    
     <!-- Default box -->
     <div class="box">
-      <div class="box-header with-border">
-        
+      <div class="box-header with-border">        
         {{-- <a class='col-lg-offset-5 btn btn-success' href="{{ route('invoice.generate', Auth::user()->id ) }}">Pagar</a> --}}
         <div class="box-tools pull-right">
           <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -34,32 +30,31 @@
         <div class="box">
           <div class="box-header">
             <br>
-            @if (!empty($activa))
               {{-- expr --}}
               <div>
+              @if (!empty($activa))
+              @endif
+               <a href="{{ route('competition.create') }}" class="btn btn-primary pull-left btn-sm">Crear concurso</a>
                 
                 <a href="{{ route('ranking') }}" class="btn btn-primary pull-left btn-sm">Tabla de puntos ( Ranking )</a>
               </div>
               <br>
               {{-- <td>suma : {{ $activa->puntos[0]->sum}}</td> --}}
-            @endif
             <h1>Concursos </h1>
             @if (empty($activa))
-              <a href="{{ route('competition.create') }}" class="btn btn-primary pull-left btn-sm">Crear concurso</a>
             @endif
-            
-            
           </div>
           <!-- /.box-header -->
           <div class="box-body">
             <table id="example1" class="table table-bordered table-striped">
               <thead>
               <tr>
-                
                 <th>Nro</th>
                 <th>Concurso</th>
                 <th>Activo</th>
                 <th>Meta</th>
+                <th>Finalizado</th>
+                <th>Fecha limite</th>
                 <th>Creado</th>
                 <th>Puntos actuales</th>
                 <th>Premio</th>
@@ -76,19 +71,25 @@
               @foreach ($competitions as $item)
                 <tr>
                   <td>{{ $loop->index + 1 }}</td>
-                    <td>{{ $item->name }}</td>
-                    
+                    <td>{{ $item->name }}</td>                    
                     <td>
                       @if($item->active == 0)
                         No                      
                       @endif
-
                       @if($item->active == 1)
                         Si                      
                       @endif
                     </td>
-                    
                     <td>{{ $item->goal }}</td>
+                    <td>
+                      @if($item->ended == 0)
+                        No ha finalizado                     
+                      @endif
+                      @if($item->ended == 1)
+                        Finalizado                      
+                      @endif
+                    </td>
+                    <td>{{ $item->dead_line }}</td>
                     <td>{{ $item->created_at }}</td>
                     
                     @if($item->active == 1)
@@ -107,7 +108,7 @@
                          $premio = $item->goal * 0.1
                          $premio = ($premio * $item->reward) / 100; --}}
                         {{-- Ganancia en Euros --}}
-                        {{  ($item->goal * 0.01) / $item->reward  }} €
+                        {{  ( ($item->goal * 0.01) * $item->reward ) / 100 }} €
                       
                     @endif
                     <td>{{ $item->reward }} %</td>
@@ -130,8 +131,7 @@
               </tbody>
               <tfoot>
               <tr>
-                <th>Nro</th>
-            
+                <th>Nro</th>            
               </tr>
               </tfoot>
             </table>
@@ -142,8 +142,7 @@
       </div>
       <!-- /.box-body -->
       <div class="box-footer">
-        {{-- <p>Debe pagar: {{ $total }} €</p> --}}
-        
+        {{-- <p>Debe pagar: {{ $total }} €</p> --}}        
       </div>
       <!-- /.box-footer-->
     </div>

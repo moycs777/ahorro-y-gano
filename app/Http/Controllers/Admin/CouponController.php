@@ -10,9 +10,10 @@ use App\Store;
 use App\Competition;
 use App\Gift;
 use App\Ranking;
+use App\RankingHijo;
 use App\Reffer;
 use App\Winner;
-use App\Model\user;
+use App\Model\user\User;
 
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -30,6 +31,7 @@ class CouponController extends Controller
         $this->middleware('auth:admin');
     }
 
+    
     public function index()
     {
         $store = Store::where('auth_id', '=', Auth::user()->id )->get();    
@@ -38,9 +40,10 @@ class CouponController extends Controller
         return view('admin.coupon.index', compact('coupon'));
     }
 
+    // La funcion original esta en CouponControllerOLD.php
     public function reclaim(Request $request )
     {
-        //dd($request->all());
+        // asignacion del cupon actual
         $coupon = Coupon::find($request->coupon_id);
         $coupon->consolidated = 1;
         $coupon->points = $request->points;
@@ -49,58 +52,23 @@ class CouponController extends Controller
         // verificar si hay competicion, ver en la tabla coupon si ya se alcanzo el goal de la competicion
         $competition = Competition::where('active', '=', 1)->first();
         
+        // Inicio del condifcional IF  --  hay concurso activo
         if (!$competition == null) {
             $goal = $competition->goal;
+            $dead_line = $competition->dead_line;
             $inicio = $competition->created_at;
+            //$puntos_hijo = 0;
+
+            // Verificar y activar mis puntos de referidos en caso q esta sea mi primera compra
+            $usuario_actual = Ranking::where('user_id', '=', $coupon->user_id )
+                ->where('competition_id', '=', $competition->id)
+                ->first();
             
-            //1. verificamos cuantos referidos tiene el padre 
-            $father = Reffer::where('reffered_id', '=', $coupon->user_id)->first();
-
-            if (!$father == null) {
-                $reffers = Reffer::where('user_id', '=', $father->user_id)->count();
-
-                //si el padre tiene cupon activo en el concurso actual para darle los puntos que le correspondan
-                $is_in_competition = Ranking::where('user_id', '=', $father->user_id)
+            if ($usuario_actual == null) {
+                
+                RankingHijo::where('user_id', '=', $coupon->user_id)
                     ->where('competition_id', '=', $competition->id)
-                    ->first();
-
-                if (! $is_in_competition == null) {
-                    //determinar el numero de referidos q tiene el padre
-                    if ($reffers < 10)
-                        {    
-                          $points = $coupon->points * 0.60;
-                        } 
-                        elseif (($reffers >= 10) && ($reffers < 20))
-                        {
-                          $points = $coupon->points * 0.70;
-                        } 
-                        elseif (($reffers >= 20) && ($reffers < 30))
-                        {
-                          $points = $coupon->points * 0.80;
-                        } 
-                        elseif ($reffers >= 30)
-                        {
-                          $points = $coupon->points * 0.90;
-                        }
-
-                    $gift = Gift::where('user_id', '=',  $father->user_id) 
-                        ->where('competition_id', '=', $competition->id)
-                        ->first();
-
-                    if ($gift) {                   
-                        $gift->sum += $points;
-                        $gift->save();
-                    }elseif (!$gift){
-                        $gift = new Gift();
-                        $gift->user_id = $father->user_id;
-                        $gift->competition_id = $competition->id;
-                        $gift->sum += $points;
-                        $gift->save();
-
-                    }
-                // 2. registramos el referido en el ranking
-                }
-
+                    ->update(array('active' => 1));
             }
 
             //Aqui registramos y actualizamos la tabla de ranking
@@ -113,15 +81,93 @@ class CouponController extends Controller
                 $ranking->competition_id = $competition->id;
                 $ranking->sum += $coupon->points;
                 $ranking->save();
+                //$puntos_hijo = $ranking->sum;
             }elseif (!$ranking) {
                 $ranking = new Ranking();
                 $ranking->user_id = $coupon->user_id;
                 $ranking->competition_id = $competition->id;
                 $ranking->sum = $coupon->points;
                 $ranking->save();
+                //$puntos_hijo = $ranking->sum;                
+            }
+            
+            //1. verificamos cuantos referidos tiene el padre 
+            $father = Reffer::where('reffered_id', '=', $coupon->user_id)->first();
+            $reffers = Reffer::where('user_id', '=', $father->user_id)->count();
+            //si el padre tiene cupon activo en el concurso actual para darle los puntos que le correspondan
+            $is_in_competition = Ranking::where('user_id', '=', $father->user_id)
+                ->where('competition_id', '=', $competition->id)
+                ->first();
+            $estatus_padre = 0;
+            // si el Padre tiene compras lo activamos 
+            if (! $is_in_competition == null) {
+                $estatus_padre = 1; 
+            }
+            // Determinar los puntos del padre
+            //determinar el numero de referidos q tiene el padre
+            if ($reffers < 10)
+                {    
+                  $points = $coupon->points * 0.60;
+                } 
+                elseif (($reffers >= 10) && ($reffers < 20))
+                {
+                  $points = $coupon->points * 0.70;
+                } 
+                elseif (($reffers >= 20) && ($reffers < 30))
+                {
+                  $points = $coupon->points * 0.80;
+                } 
+                elseif ($reffers >= 30)
+                {
+                   $points = $coupon->points * 0.90;
+                }
+            
+            //Aqui registramos y actualizamos la tabla de ranking
+            $ranking_hijo = RankingHijo::where('user_id', '=', $father->user_id )
+                ->where('son_id', '=', $coupon->user_id)
+                ->where('competition_id', '=', $competition->id)
+                ->first();
+            
+
+            if ($ranking_hijo) {
+                $ranking_hijo->points += $points;
+                $ranking_hijo->active = $estatus_padre;
+                $ranking_hijo->save();
+            }elseif (!$ranking_hijo) {
+                $ranking_hijo = new RankingHijo();
+                $ranking_hijo->user_id = $father->user_id;
+                $ranking_hijo->son_id = $coupon->user_id;
+                $ranking_hijo->competition_id = $competition->id;
+                $ranking_hijo->points = $points;
+                $ranking_hijo->active = $estatus_padre;
+                $ranking_hijo->save();
             }
 
+            //dd($ranking_hijo);
+            /*$gift = Gift::where('user_id', '=',  $father->user_id) 
+                ->where('competition_id', '=', $competition->id)
+                ->first();
+
+            if ($gift) {                   
+                $gift->sum += $points;
+                $gift->save();
+            }elseif (!$gift){
+                $gift = new Gift();
+                $gift->user_id = $father->user_id;
+                $gift->competition_id = $competition->id;
+                $gift->sum += $points;
+                $gift->save();
+
+            }*/
+
+            //terminar el concurso por fecha limite
+            $dt =Carbon::now()->format('Y-m-d');
+            if ( $dt >= $dead_line) {
+                //return "termino el cocnurso por limite de fecha";
+            }
+            
             //Buscamos los cupones activados y que pertenescan a el cocnurso actual
+
             $cupones = DB::table('coupons')
                 ->where('consolidated', 1)
                 ->where('created_at', '>=', $inicio)
@@ -132,10 +178,9 @@ class CouponController extends Controller
             }
             if ($maxi <= intval( $goal ) ) {
                  return redirect()->back();
-                 //return "no " . $maxi . " meta: " . $goal;
             }
 
-
+            //Cuando ya hay ganador
             if ($maxi >= intval( $goal ) ) {
                 //return "ganador";
                 $ganadores = DB::select('select user_id,count(*),sum(points) as sum
@@ -144,23 +189,33 @@ class CouponController extends Controller
                      group by user_id' ); 
                 //damos por finalizado el concurso
                 $competition->active = 0;
+                $competition->ended = 1;
                 $competition->save();
+
+                // Buscamos el que sera el proximo concurso
+                $next_competition = Competition::where('active', '=', 0)
+                    ->where('ended', '=', 0)
+                    ->first();
+                    //dd($next_competition);
+                    if (!$next_competition == null) {
+                        $next_competition->active = 1;
+                        $next_competition->ended = 0;
+                        $next_competition->save();
+                    }
                 
                 foreach ($ganadores as $ganador) {
                     $winners = new Winner();
                     $winners->user_id = $ganadores[0]->user_id;
                     $winners->competition_id = $competition->id;
                     $winners->score = $ganadores[0]->sum;
-                    $winners->save();
-                    
+                    $winners->save();                    
                 }
-
             }    
                    
             return redirect()->route('competition.index');
 
-        //fin del conicional
-        }
+        
+        }//fin del conicional
         
         return redirect()->back();
 

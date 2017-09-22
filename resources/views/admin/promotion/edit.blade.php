@@ -36,7 +36,9 @@
                 'enctype' =>'multipart/form-data'
             ]) !!}
 
-                
+                <input type="hidden" id="precio" name="precio" value="{{$promotion->price_not_offert}}">
+                <input type="hidden" id="tipo" value="{{$promotion->type}}">
+
                 <div class="form-group {{ $errors->has('store') ? 'has-error' : ''}}">
                 {!! Form::label('store', 'Store: ', ['class' => 'col-sm-3 control-label']) !!}
                 <div class="col-sm-6">
@@ -70,13 +72,15 @@
                     {!! $errors->first('price_not_offert', '<p class="help-block">:message</p>') !!}
                 </div>
             </div>
-            <div class="form-group {{ $errors->has('price_with_offert') ? 'has-error' : ''}}">
+
+            <div id="price_with_offert" class="form-group {{ $errors->has('price_with_offert') ? 'has-error' : ''}}">
                 {!! Form::label('price_with_offert', 'Price With Offert: ', ['class' => 'col-sm-3 control-label']) !!}
                 <div class="col-sm-6">
                     {!! Form::number('price_with_offert', null, ['class' => 'form-control', 'required' => 'required']) !!}
                     {!! $errors->first('price_with_offert', '<p class="help-block">:message</p>') !!}
                 </div>
             </div>
+
             <div class="form-group {{ $errors->has('picture') ? 'has-error' : ''}}">
                 {!! Form::label('picture', 'Picture: ', ['class' => 'col-sm-3 control-label']) !!}
                 <div class="col-sm-6">
@@ -105,7 +109,7 @@
                     {!! $errors->first('points', '<p class="help-block">:message</p>') !!}
                 </div>
             </div>
-            <div class="form-group {{ $errors->has('type') ? 'has-error' : ''}}">
+            <div id="div_type" class="form-group {{ $errors->has('type') ? 'has-error' : ''}}">
                 {!! Form::label('type', 'Type: ', ['class' => 'col-sm-3 control-label']) !!}
                 <div class="col-sm-6">
                     {!! Form::number('type', null, ['class' => 'form-control', 'required' => 'required']) !!}
@@ -140,18 +144,31 @@
 @section('footerSection')
 <script src="{{ asset('admin/plugins/select2/select2.full.min.js') }}"></script>
 <script src="{{  asset('admin/ckeditor/ckeditor.js') }}"></script>
-<script>
-    $(function () {
-      // Replace the <textarea id="editor1"> with a CKEditor
-      // instance, using default configuration.
-      CKEDITOR.replace('editor1');
-      //bootstrap WYSIHTML5 - text editor
-      $(".textarea").wysihtml5();
-    });
-</script>
+
 <script>
   $(document).ready(function() {
     $(".select2").select2();
+
+        console.log( "Promotion edit ready! de tipo " + $('#tipo').val());     
+        //bootstrap WYSIHTML5 - text editor
+        $(".textarea").wysihtml5();
+        $(".select2").select2();
+
+        if ($('#tipo').val() == 2) {
+            $('#div_type').hide();
+            $('#price_with_offert').hide();
+            $('#price_with_offert').val(1);
+        }
+
+        $('#div_type').hide();
+        precio = $('#precio').val();
+        $('#price_with_offert').val(precio);
+
+        $( "#points" ).focus(function() {
+          var_min = $( "#price_not_offert" ).val();
+          $( "#points" ).attr({"min" : var_min })
+        });
+        
   });
 </script>
 @endsection

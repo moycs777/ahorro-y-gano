@@ -27,7 +27,7 @@ class Coupon extends Model
     }
 
     public function user(){
-        return $this->belongsTo('App\Model\user\user');
+        return $this->belongsTo('App\Model\user\User');
     }
 
     public function promotion()

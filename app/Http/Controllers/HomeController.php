@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Model\user\category;
 use App\Promotion;
+use App\Policie;
 use App\Model\user\tag;
 use Illuminate\Http\Request;
 
@@ -26,4 +27,6 @@ class HomeController extends Controller
     {
         return view('errors.pagenotfound');
     }
+
+    
 }

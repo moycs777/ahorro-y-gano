@@ -22,6 +22,11 @@
                     <li>
                         <a href="{{ route('user.concurso') }}">concurso</a>
                     </li>
+
+                    <li>
+                        <a href="{{ route('politicas') }}">Politicas de uso</a>
+                    </li>
+
                     <li>
                         <a href="{{ route('user.ranking') }}">Tabla de puntos</a>
                     </li>
@@ -57,6 +62,10 @@
                             <li><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 {{ Auth::user()->name }} <span class="caret"></span>
                             </a></li>
+                            <li><a href="{{ route('user.profile') }}"
+                                >
+                                Perfil
+                            </a> </li>
                         @endif
                     </li>
                 </ul>

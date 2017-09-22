@@ -24,23 +24,6 @@ class IndexController extends Controller
     public function index()
     {
 
-        //return "este es el index";
-        /*return response('{Hello World: 1}', 200)
-                  ->header('Content-Type', 'text/plain');*/
-        /*try {
-            $promotions = Promotion::where('id', '>=', 1)->orderBy('created_at','DESC')->paginate(5);
-            //return ['r' => 'y', 'promotions' => $promotions];
-            return response()->json($promotions, 200);
-            
-            if (!$promotions) {
-                return response()->json(['r' =>'n','mensaje' => 'no hay ofertas']);
-            }
-
-            return response()->json($promotions, 200);
-
-        } catch (Exception $e) {
-            return response()->json('Hay un error', 500);
-        }*/
         $promotions = Promotion::all();
         return ['r' => 'y', 'datos' => $promotions];
     }

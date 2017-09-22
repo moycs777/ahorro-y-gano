@@ -10,6 +10,7 @@ use Session;
 use Auth;
 
 use App\Model\admin\admin;
+use App\Model\user\User;
 use App\Reffer;
 
 class UserController extends Controller
@@ -19,40 +20,39 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth:admin');
-    }/*
+    }
+
+    /*
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
     }*/
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
+        if (Auth::user()->level == 1) {
+            # code...
+            $admins = admin::where('level', '<', 5)->get();
+
+            return view('admin.user.show', compact('admins'));
+        }
+        
         $admins = admin::where('admin_id', '=', Auth::user()->id)
+            ->where('level', '<', 5)
             ->orWhere('id', '=', Auth::user()->id)
             ->get();
+
         return view('admin.user.show', compact('admins'));
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function create()
     {
         return view('admin.user.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+   
     public function store(Request $request)
     {
         //dd($request->all());
@@ -120,7 +120,7 @@ class UserController extends Controller
         $user->password = bcrypt($request->password);
         $user->phone = $request->phone;
         $user->status = $request->status;
-        $user->level = Auth::user()->level;
+        $user->level = $request->level;
         $user->state = $request->state;
         $user->city = $request->city;
         $user->address = $request->address;
@@ -132,9 +132,24 @@ class UserController extends Controller
         return redirect('admin/user');
     }
 
+    public function clientes()
+    {
+        $clients = User::all();
+        //dd($clients);
+        return view('admin.user.clients', compact('clients'));
+
+    }
+
     public function destroy($id)
     {
-        //
+        $admin = admin::findOrFail($id);
+
+        $admin->delete();
+
+        Session::flash('message', 'admin deleted!');
+        Session::flash('status', 'success');
+
+        return redirect('admin/user');
     }
 
     protected function guard()

@@ -1,0 +1,20 @@
+registrar titulo
+bateria
+credinomina
+
+/*        							  ----------               					 */
+
+-Terminar concurso por factor fecha limite
+- casi listo - sumar puntos totales de las 2 tablas en la web
+-geolocalizacion
+-beta pagos pendientes
+
+-regalar puntos
+
+	-apartir de consumo
+	[
+		-dividir los participantes en 4 partes
+		-el usuario solo vera a sus grupos superiores	
+		-los de menor puntaje en caso de ganar seran los del grupo 4
+		-confirmacion de compartir puntos
+	]

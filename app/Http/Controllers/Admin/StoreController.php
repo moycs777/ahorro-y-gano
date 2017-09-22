@@ -6,6 +6,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Store;
+use App\State;
+use App\City;
 use App\Clasification;
 use App\Model\admin\admin;
 
@@ -25,7 +27,13 @@ class StoreController extends Controller
   
     public function index()
     {
-        $store = Store::where('admin_id', '=', Auth::user()->id)->get();
+        if (Auth::user()->level == 1) {
+            $store = Store::All();
+            return view('admin.store.index', compact('store'));
+            # code...
+        }
+        
+        $store = Store::where('admin_id', '=', Auth::user()->id )->get();
         //dd($store);
         if ( is_null($store) ){
            return "vacio";   
@@ -38,13 +46,15 @@ class StoreController extends Controller
     {   
         
         $clasifications = Clasification::all();
+        $states = State::all();
 
-        return view('admin.store.create', compact('clasifications'));
-    }
+        return view('admin.store.create', compact('clasifications', 'states'));
+    } 
 
     
     public function store(Request $request)
     {
+        //dd($request->all());
         //return Auth::id();
         $this->validate($request, ['name' => 'required','auth_id'=>'required', 'admin_id'=>'required', 'nif_cif' => 'required', 'clasification_id' => 'required', 'address' => 'required', 'billing_address' => 'required', 'state' => 'required', 'city' => 'required', 'location' => 'required', 'phone_1' => 'required', 'email' => 'required|string|email|max:255|unique:admins', 'password' => 'required', 'debt_level' => 'required', 'status' => 'required', ]);
 
@@ -83,21 +93,26 @@ class StoreController extends Controller
     public function show($id)
     {
         $store = Store::findOrFail($id);
-
         return view('admin.store.show', compact('store'));
     }
     
     public function edit($id)
     {
         $store = Store::findOrFail($id);
+        $clasifications = Clasification::all();
+        $states = State::all();
+        $cities = City::where('DC', '=', 4)
+            ->take(8)
+            ->get();
 
-        return view('admin.store.edit', compact('store'));
+        return view('admin.store.edit', compact('store', 'states', 'clasifications'));
     }
 
     
     public function update($id, Request $request)
     {
-        $this->validate($request, ['name' => 'required','auth_id'=>'required', 'nif_cif' => 'required', 'clasification_id' => 'required', 'address' => 'required', 'billing_address' => 'required', 'state' => 'required', 'city' => 'required', 'location' => 'required', 'phone_1' => 'required', 'email' => 'required|string|email|max:255|unique:admins',  'debt_level' => 'required', 'status' => 'required', ]);
+        //dd($request->all());
+        $this->validate($request, ['name' => 'required','auth_id'=>'required', 'nif_cif' => 'required', 'clasification_id' => 'required', 'address' => 'required', 'billing_address' => 'required', 'state' => 'required', 'city' => 'required', 'location' => 'required', 'phone_1' => 'required', 'debt_level' => 'required', 'status' => 'required', ]);
 
         $store = Store::findOrFail($id);
         $store->update($request->all());

@@ -7,6 +7,8 @@ class DatabaseSeeder extends Seeder
 {    
     public function run()
     {
+        
+
         DB::table('admins')->insert([
             'name' => 'Admin',
             'admin_id' => 1,
@@ -17,33 +19,105 @@ class DatabaseSeeder extends Seeder
             'level' => 1,
             'state' => 'Bolivar',
             'city' => 'Bolivar City',
+            'created_at'  => Carbon::now()->format('Y-m-d H:i:s'),
             'address' => 'vista hermosa vereda 6 #31'
 
         ]);
         
+        //para q el id comience en 1000
+        $startId = 1000;
+        DB::table('users')->insert(['id'=> $startId - 1,
+            'name' => 'poiu',
+            'email' => 'poiu@gmail.com',
+            'password' => bcrypt('12345678'),
+            'reffer_id' => 0,]);
+        DB::table('users')->where('id',$startId - 1)->delete();
+
+        // para que los cupones empiecen en 25230
+        $startId = 25230;
+        DB::table('coupons')->insert(['id'=> $startId - 1,
+            'store_id' => 0,
+            'promotion_id' => 0,
+            'user_id' => 0,
+            'consolidated' => 0,
+            'points' => 0,
+            'payed' => 0,]);
+        DB::table('coupons')->where('id',$startId - 1)->delete();
+
+        DB::table('coupons')->insert([
+            'store_id' => 0,
+            'promotion_id' => 0,
+            'user_id' => 0,
+            'consolidated' => 0,
+            'points' => 0,
+            'payed' => 0,
+        ]);
+
         DB::table('users')->insert([
             'name' => 'Moises',
             'email' => 'moycs777@gmail.com',
             'password' => bcrypt('12345678'),
-            'reffer_id' => 0,
+            'reffer_id' => 1000,
+            'confirmed' => 1,
         ]);
 
         DB::table('reffers')->insert([
-            'user_id' => 1,
-            'reffered_id' => 2,
+            'user_id' => 1000,
+            'reffered_id' => 1001,
         ]); 
 
-        DB::table('reffers')->insert([
+        /*DB::table('reffers')->insert([
             'user_id' => 1,
             'reffered_id' => 3,
-        ]);       
+        ]);  */     
         
         DB::table('users')->insert([
             'name' => 'Cesar',
             'email' => 'cesar@gmail.com',
             'password' => bcrypt('12345678'),
-            'reffer_id' => 1,
+            'reffer_id' => 1000,
+            'confirmed' => 1,
         ]);
+
+         DB::table('users')->insert([
+            'name' => 'usuario 1 ref 1001',
+            'email' => 'usuarioreferido1001@gmail.com',
+            'password' => bcrypt('12345678'),
+            'reffer_id' => 1001,
+            'confirmed' => 1,
+        ]);
+
+         DB::table('reffers')->insert([
+             'user_id' => 1001,
+             'reffered_id' => 1002,
+         ]);
+
+
+         DB::table('users')->insert([
+            'name' => 'usuario 2 ref 1001',
+            'email' => 'usuario2referido1001@gmail.com',
+            'password' => bcrypt('12345678'),
+            'reffer_id' => 1001,
+            'confirmed' => 1,
+        ]);
+
+         DB::table('reffers')->insert([
+             'user_id' => 1001,
+             'reffered_id' => 1003,
+         ]);
+
+         DB::table('users')->insert([
+            'name' => 'usuario  ref 1002',
+            'email' => 'usuario3referido1003@gmail.com',
+            'password' => bcrypt('12345678'),
+            'reffer_id' => 1002,
+            'confirmed' => 1,
+        ]);
+
+         DB::table('reffers')->insert([
+             'user_id' => 1002,
+             'reffered_id' => 1004,
+         ]);
 
         DB::table('admins')->insert([
             'name' => 'Moises',
@@ -55,6 +129,7 @@ class DatabaseSeeder extends Seeder
             'level' => 1,
             'state' => 'estado',
             'city' => 'ciudad',
+            'created_at'  => Carbon::now()->format('Y-m-d H:i:s'),
             'address' => 'direccion'
         ]);
 
@@ -80,8 +155,8 @@ class DatabaseSeeder extends Seeder
             'clasification_id' => 1,
             'address' => 'true',
             'billing_address' => 'true',
-            'state' => '1',
-            'city' => 'true',
+            'state' => 8,
+            'city' => 8,
             'location' => 'true',
             'zip' => 'true',
             'phone_1' => 'true',
@@ -133,11 +208,20 @@ class DatabaseSeeder extends Seeder
             'type' => 1
         ]);
 
+        DB::table('policies')->insert([
+            'use' => 'politicas',
+            'body' => 'nuestras politicas',
+            
+        ]);
+
         DB::table('competitions')->insert([
             'name' => 'Cesar Goal',
             'goal' => 120,
             'reward' => 50,
+            'total' => 0.6,
             'active' => 1,
+            'ended' => 0,
+            'dead_line' => Carbon::create(2017, 10, 15)->format('Y-m-d H:i:s'),
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);
     }

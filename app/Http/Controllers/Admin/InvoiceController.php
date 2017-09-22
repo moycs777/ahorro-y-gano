@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 use App\Promotion;
 use App\Store;
@@ -19,11 +20,12 @@ class InvoiceController extends Controller
     public function index()
     {
         //$debts = Coupon::where('payed', '=', 1)->get();
+        $store = Store::where('auth_id', '=', Auth::user()->id)
+            ->get();
+        //dd($store);
         $debts = Coupon::whereMonth('created_at', '>=', 1)
-            ->whereMonth('created_at', '<=', 8)
-            ->where('consolidated', '=', 1)
-            ->where('payed', '=', 0)
-            ->where('invoice', '=', 1)
+            ->where('store_id', '=', $store[0]->id )
+            ->where('payed', '=', 1)
             ->get();
         //dd($debts);
         return view('admin.invoice.index', compact('debts'));

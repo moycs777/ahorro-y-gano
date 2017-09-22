@@ -10,7 +10,7 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-     Facturas
+     Anuncios Pagados
       
     </h1>
     
@@ -32,7 +32,7 @@
       <div class="box-body">
         <div class="box">
           <div class="box-header">
-            <h3 class="box-title">facturas</h3>
+            <h3 class="box-title">Pagados</h3>
           </div>
           <!-- /.box-header -->
           <div class="box-body">
@@ -47,7 +47,7 @@
                 <th>ID usuario</th>
                 <th>Puntos</th>
                 <th>Pagado</th>
-                <th>blank</th>
+                <th>Anuncio</th>
               </tr>
               </thead>
               <tbody>
@@ -56,7 +56,6 @@
               @endphp
               @foreach ($debts as $item)
                 <tr>
-                  
                   <td>{{ $loop->index + 1 }}</td>
                   <td>{{ $item->store->name }}</td>
                   <td>{{ $item->promotion->name }}</td>
@@ -70,8 +69,10 @@
                     {{ $comision }} €
                   {{-- <a href="{{ route('debt.edit',$item->id) }}"><span class="glyphicon glyphicon-edit"></span></a> --}}</td>
                   <td>
-                   
+                    <div class="asd"><img class="img-responsive" WIDTH="50" HEIGHT="50" alt="{{ $item->promotion->name }}" src="{{  url($item->promotion->picture)}}" />
+                    </div>
                   </td>
+
                 </tr>
               @endforeach
               </tbody>
@@ -87,7 +88,7 @@
       </div>
       <!-- /.box-body -->
       <div class="box-footer">
-        <p>Debe pagar: {{ $pago }} €</p>
+        <p>Ha pagado: {{ $pago }} €</p>
         <input type="submit" value="generar factura">
         </form>
 

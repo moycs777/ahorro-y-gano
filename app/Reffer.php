@@ -12,7 +12,7 @@ class Reffer extends Model
 
 	public function padre()
     {
-	    return $this->belongsTo('App\Model\user\user', 'user_id	');
+	    return $this->belongsTo('App\Model\user\User', 'user_id	');
     }
 
 	

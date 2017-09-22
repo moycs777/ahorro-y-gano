@@ -12,4 +12,8 @@ class admin extends Authenticatable
     public function stores(){
         return $this->hasMany('App\Store', 'admin_id', 'id');
     }
+
+    public function commision(){
+        return $this->hasMany('App\Commision');
+    }
 }

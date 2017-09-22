@@ -69,14 +69,15 @@
               <div class="form-group">
                 <label for="cargo">Cargo</label>
                 <br>
-                @if(Auth::user()->level ==1)
-                  <input type="radio" name="level" value="1" required="required"> Administrador<br>
+                <input type="hidden" name="level" value="{{$user->level}}">
+                @if($user->level ==1)
+                  <p>Administrador</p>
                 @endif
-                @if(Auth::user()->level ==1 || Auth::user()->level ==2)  
-                  <input type="radio" name="level" value="2"> Delegado<br>
-                @endif
-                @if(Auth::user()->level ==1 or Auth::user()->level ==2)
-                  <input type="radio" name="level" value="3"> Vendedor
+                @if($user->level == 2 )
+                  <p>Delegado</p>
+                @endif 
+                @if($user->level == 3 )
+                  <p>Agente</p>
                 @endif
               </div>
 				
@@ -87,17 +88,17 @@
         
         <div class="form-group">
           <label for="subtitle">Provincia</label>
-          <input type="state" class="form-control" id="state" name="state" placeholder="Provincia"  value="{{ old('state') }}" required>
+          <input type="state" class="form-control" id="state" name="state" placeholder="Provincia"  value="{{ $user->state }}" required>
         </div>
 
         <div class="form-group">
           <label for="subtitle">Ciudad</label>
-          <input type="city" class="form-control" id="city" name="city" placeholder="Ciudad"  value="{{ old('city') }}" required>
+          <input type="city" class="form-control" id="city" name="city" placeholder="Ciudad"  value="{{ $user->city }}" required>
         </div>
 
         <div class="form-group">
           <label for="subtitle">Direccion</label>
-          <input type="address" class="form-control" id="address" name="address" placeholder="Direccion"  value="{{ old('address') }}" required>
+          <input type="address" class="form-control" id="address" name="address" placeholder="Direccion"  value="{{ $user->address }}}" required>
         </div>
 
       </div>
